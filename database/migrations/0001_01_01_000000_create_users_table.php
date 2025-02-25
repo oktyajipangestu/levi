@@ -17,8 +17,12 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->enum('role', ['employee', 'supervisor', 'hr'])->default('employee'); // Role pengguna
+            $table->string('department', 50)->nullable(); // Departemen (hanya untuk karyawan)
+            $table->foreignId('supervisor_id')->nullable()->constrained('users'); // Atasan (relasi diri sendiri)
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
