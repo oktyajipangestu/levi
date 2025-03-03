@@ -46,6 +46,16 @@ class User extends Authenticatable
         ];
     }
 
+    public function userProfile()
+    {
+        return $this->hasOne(UserProfile::class);
+    }
+
+    public function leave()
+    {
+        return $this->hasMany(Leave::class);
+    }
+
     public function leaveRequest()
     {
         return $this->hasMany(LeaveRequest::class);

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\LeaveRequestController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -19,9 +20,7 @@ Route::get('/', function () {
 // });
 
 Route::middleware(['auth', 'role:employee'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('leave.index');
-    })->name('dashboard');
+    Route::get('/dashboard', [LeaveController::class, 'index'])->name('dashboard');
 
     Route::resource('leave', LeaveRequestController::class)->only([
         'index','create','store','show'
