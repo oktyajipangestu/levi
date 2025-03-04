@@ -19,15 +19,17 @@ Route::get('/', function () {
 //     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 // });
 
-Route::middleware(['auth', 'role:employee'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [LeaveController::class, 'index'])->name('dashboard');
+    Route::post('/leave/approve/{id}', [LeaveController::class, 'approve'])->name('leave.approve');
+    Route::post('/leave/reject/{id}', [LeaveController::class, 'reject'])->name('leave.reject');
 
     Route::resource('leave', LeaveRequestController::class)->only([
         'index','create','store','show'
     ]);
 });
 
-Route::middleware(['auth', 'role:supervisor'])->group(function () {
+Route::middleware(['auth', 'role:hr'])->group(function () {
     Route::get('/dashboard-supervisor', function () {
         return view('pages.employer.index');
     })->name('employer.dashboard');

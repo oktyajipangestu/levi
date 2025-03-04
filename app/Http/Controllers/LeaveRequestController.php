@@ -26,7 +26,7 @@ class LeaveRequestController extends Controller
     {
         $userId = Auth::user()->id;
         $user = User::find($userId);
-        $annualLeaves = $user->leave()->where('type', 'annual')->get();
+        $annualLeaves = $user->leave()->where('type', 'annual')->where('user_id', $userId)->get();
         $list_request = LeaveRequest::where('user_id', $userId)->get();
         return view('leave.create', [
             'annual_leaves' => $annualLeaves,
@@ -60,7 +60,17 @@ class LeaveRequestController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $userId = Auth::user()->id;
+        $user = User::find($userId);
+        $annualLeaves = $user->leave()->where('type', 'annual')->where('user_id', $userId)->get();
+        $list_request = LeaveRequest::where('user_id', $userId)->get();
+
+        $request = LeaveRequest::findOrFail($id);
+        return view('leave.show', [
+            'request' => $request,
+            'annual_leaves' => $annualLeaves,
+            'list_request' => $list_request
+        ]);
     }
 
     /**
