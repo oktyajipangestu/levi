@@ -60,8 +60,7 @@
             <!--begin::User Menu Dropdown-->
             <li class="nav-item dropdown user-menu">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                    <img src="../../../dist/assets/img/user2-160x160.jpg" class="user-image rounded-circle shadow"
-                        alt="User Image" />
+                    <div class="p-1 text-center" style="display:inline-block; width: 25px; height: 25px; background-color: #0000FE; color: white; border-radius:50%; line-height: 50%;"><span>D</span></div>
                     <span class="d-none d-md-inline">Darlene Robert</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">

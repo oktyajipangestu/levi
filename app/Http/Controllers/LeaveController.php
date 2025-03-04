@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Leave;
 use App\Models\LeaveRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,14 +33,54 @@ class LeaveController extends Controller
             $countByStatus['pending'] = LeaveRequest::whereHas('user', function ($query) use ($userId) {
                 $query->where('supervisor_id', $userId);
             })->where('status_supervisor', 'pending')->count();
+            $view = 'leave.index';
+            $data = [
+                'list_request' => $leaveRequest,
+                'rejected' => $rejectedCount,
+                'pending' => $pendingCount,
+                'approved' => $approvedCount,
+                'list_approval' => $leaveApproval ?? [],
+                'count_approval' => $countByStatus ?? []
+            ];
+        } elseif ($user->role == "hr") {
+            $leaveRequest = LeaveRequest::where('status_supervisor', 'approve')->paginate(10);
+            $rejectedCount = LeaveRequest::where('status_hr', 'reject')->where('status_supervisor', 'approve')->count();
+            $pendingCount = LeaveRequest::where('status_hr', 'pending')->where('status_supervisor', 'approve')->count();
+            $approvedCount = LeaveRequest::where('status_hr', 'approve')->where('status_supervisor', 'approve')->count();
+            $view = 'leave.hr.index';
+            $data = [
+                'list_request' => $leaveRequest,
+                'rejected' => $rejectedCount,
+                'pending' => $pendingCount,
+                'approved' => $approvedCount
+            ];
+        } else {
+            $view = 'leave.index';
+            $data = [
+                'list_request' => $leaveRequest,
+                'rejected' => $rejectedCount,
+                'pending' => $pendingCount,
+                'approved' => $approvedCount
+            ];
         }
-        return view('leave.index', [
+
+        return view($view, $data);
+
+    }
+
+    public function leaveHr()
+    {
+        $user = Auth::user();
+        $leaveRequest = LeaveRequest::paginate(10);
+        $rejectedCount = LeaveRequest::where('status_hr', 'reject')->count();
+        $pendingCount = LeaveRequest::where('status_hr', 'pending')->count();
+        $approvedCount = LeaveRequest::where('status_hr', 'approve')->count();
+
+        return view('leave.hr.index', [
             'list_request' => $leaveRequest,
             'rejected' => $rejectedCount,
             'pending' => $pendingCount,
-            'approved' => $approvedCount,
-            'list_approval' => $leaveApproval ?? [],
-            'count_approval' => $countByStatus ?? []
+            'approved' => $approvedCount
         ]);
     }
 
@@ -50,6 +91,13 @@ class LeaveController extends Controller
             if (Auth::user()->role == 'supervisor') {
                 $leaveRequest->status_supervisor = 'approve';
             } else {
+                if ($leaveRequest->type == "annual") {
+                    $leave = Leave::where('user_id', $leaveRequest->user_id)->where('type', 'annual')->first();
+
+                } elseif ($leaveRequest->type == "big") {
+                    # code...
+                }
+
                 $leaveRequest->status_hr = 'approve';
             }
 

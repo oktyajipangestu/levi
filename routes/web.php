@@ -30,9 +30,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::middleware(['auth', 'role:hr'])->group(function () {
-    Route::get('/dashboard-supervisor', function () {
-        return view('pages.employer.index');
-    })->name('employer.dashboard');
+    Route::get('/dashboard-hr', [LeaveController::class, 'leaveHr'])->name('dashboard');
 });
 
 require __DIR__.'/auth.php';
