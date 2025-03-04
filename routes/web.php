@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\LeaveRequestController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\OvertimeController;
@@ -36,20 +37,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
 //     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 // });
 
-Route::middleware(['auth', 'role:employee'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('leave.index');
-    })->name('dashboard');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [LeaveController::class, 'index'])->name('dashboard');
+    Route::post('/leave/approve/{id}', [LeaveController::class, 'approve'])->name('leave.approve');
+    Route::post('/leave/reject/{id}', [LeaveController::class, 'reject'])->name('leave.reject');
 
     Route::resource('leave', LeaveRequestController::class)->only([
         'index','create','store','show'
     ]);
 });
 
-Route::middleware(['auth', 'role:supervisor'])->group(function () {
-    Route::get('/dashboard-supervisor', function () {
-        return view('pages.employer.index');
-    })->name('employer.dashboard');
+Route::middleware(['auth', 'role:hr'])->group(function () {
+    Route::get('/dashboard-hr', [LeaveController::class, 'leaveHr'])->name('dashboard');
 });
 
 require __DIR__ . '/auth.php';

@@ -16,8 +16,7 @@
             <div class="timeoff-header mb-4 d-flex justify-content-between px-5 py-4">
                 <h2 class="fw-bold">Leave & Time Off Request Form</h2>
                 <div>
-                    <a class="btn btn-outline-primary" href="{{ route('dashboard') }}">Cancel</a>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <a class="btn btn-outline-primary" href="{{ route('dashboard') }}">Kembali</a>
                 </div>
             </div>
             <hr>
@@ -74,10 +73,10 @@
                         <h4 class="fw-bold" style="color: #4343FF">Detail Leave & Time Off</h4>
                         <div class="mb-3">
                             <label for="type" class="form-label">Types of Leave</label>
-                            <select name="type" class="form-select" aria-label="Types of Leave">
-                                <option value="annual">Annual Leave</option>
-                                <option value="big">Big Leave</option>
-                                <option value="sick">Sick Leave</option>
+                            <select name="type" class="form-select" aria-label="Types of Leave" disabled>
+                                <option value="annual" {{ $request->type == "annual" ? "selected" : "" }}>Annual Leave</option>
+                                <option value="big" {{ $request->type == "big" ? "selected" : "" }}>Big Leave</option>
+                                <option value="sick" {{ $request->type == "sick" ? "selected" : "" }}>Sick Leave</option>
                             </select>
                             @error('type')
                                 <div id="validationType" class="invalid-feedback">
@@ -91,7 +90,7 @@
                                 <div class="col">
                                     <label class="visually-hidden" for="begin">Begin</label>
                                     <div class="input-group">
-                                        <input name="start_date" type="date" class="form-control" id="begin" placeholder="Start Date" value="{{ old('start_date') }}">
+                                        <input name="start_date" type="date" class="form-control" id="begin" placeholder="Start Date" value="{{ $request->start_date }}" disabled>
                                     </div>
                                     @error('start_date')
                                         <div id="validationType" class="invalid-feedback">
@@ -102,7 +101,7 @@
                                 <div class="col">
                                     <label class="visually-hidden" for="begin">Begin</label>
                                     <div class="input-group">
-                                        <input name="end_date" type="date" class="form-control" id="begin" placeholder="End Date" value="{{ old('end_date') }}">
+                                        <input name="end_date" type="date" class="form-control" id="begin" placeholder="End Date" value="{{ $request->start_date }}" disabled>
                                     </div>
                                     @error('end_date')
                                         <div id="validationType" class="invalid-feedback">
@@ -114,7 +113,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="reason" class="form-label">Reason for Leave & Time Off</label>
-                            <textarea name="reason" class="form-control" id="reason" rows="3">{{ old('reason') }}</textarea>
+                            <textarea name="reason" class="form-control" id="reason" rows="3" disabled>{{ $request->reason }}</textarea>
                             @error('reason')
                                 <div id="validationType" class="invalid-feedback">
                                     {{ $message }} tes
