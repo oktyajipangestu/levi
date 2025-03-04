@@ -37,7 +37,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 //     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 // });
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'role:employee'])->group(function () {
     Route::get('/dashboard', [LeaveController::class, 'index'])->name('dashboard');
     Route::post('/leave/approve/{id}', [LeaveController::class, 'approve'])->name('leave.approve');
     Route::post('/leave/reject/{id}', [LeaveController::class, 'reject'])->name('leave.reject');
@@ -47,8 +47,14 @@ Route::middleware(['auth'])->group(function () {
     ]);
 });
 
-Route::middleware(['auth', 'role:hr'])->group(function () {
+Route::middleware(['auth', 'role:supervisor'])->group(function () {
     Route::get('/dashboard-hr', [LeaveController::class, 'leaveHr'])->name('dashboard');
 });
+// Route::middleware(['auth', 'role:supervisor'])->group(function () {
+//     Route::get('/dashboard-supervisor', [LeaveController::class, 'LeaveHr'])->name('dashboard');
+// });
+// Route::middleware(['auth', 'role:employee'])->group(function () {
+//     Route::get('/dashboard', [LeaveController::class, ''])->name('dashboard');
+// });
 
 require __DIR__ . '/auth.php';
