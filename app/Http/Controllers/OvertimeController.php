@@ -89,5 +89,14 @@ class OvertimeController extends Controller
         return redirect()->route('overtime.approval')->with('success', 'Overtime status updated successfully.');
     }
 
+    public function history()
+    {
+        // Mengambil data pengajuan lembur dengan status 'Pending'
+        $overtimeRequest = OvertimeTransaction::where('status', 'Pending')->with('employee', 'overtimeType')->get();
+
+        // Menampilkan view persetujuan lembur dengan data pengajuan lembur
+        // return view('overtime.approval', compact('overtimeRequest'));
+    }
+
 
 }

@@ -172,9 +172,8 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="../generate/theme.html" class="nav-link">
-                  <i class="nav-icon bi bi-palette"></i>
-                  <p>Overtime</p>
+                <a class="nav-link {{ request()->is('overtime.create') ? 'active' : '' }}" href="{{ route('overtime.create') }}">
+                    <i class="nav-icon bi bi-palette"></i> Overtime
                 </a>
               </li>
             </ul>
