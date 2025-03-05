@@ -27,7 +27,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="../generate/theme.html" class="nav-link">
+                    <a href="{{ route('overtime.history') }}" class="nav-link">
                         <img src="{{ asset('images/icon/overtime-icon.svg') }}" alt="Leave">
                         <p>Overtime</p>
                     </a>
