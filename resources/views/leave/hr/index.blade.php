@@ -11,7 +11,7 @@
     <div class="m-3 bg-white rounded-lg p-5">
         <div class="timeoff-header mb-4">
             <h2 class="fw-bold">Leave & Time Off Request Approval</h2>
-            <p>Employee’s leave & time off information</p>
+            <p>Employee's leave & time off information</p>
         </div>
         <div>
             <div class="filter d-flex justify-content-between my-4">
@@ -77,7 +77,7 @@
                 </div>
             </div>
 
-            <table class="table">
+            <table class="table table-responsive">
                 <thead>
                     <tr class="table-light">
                         <th scope="col">REQUESTED BY</th>
@@ -125,7 +125,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td>{{ $approval->reason }}</td>
+                            <td>{{ Str::limit($approval->reason, 100, '...') }}</td>
                             <td>
                                 @if ($approval->status_hr == "reject")
                                     <div>

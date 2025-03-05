@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->enum('type', ['annual','big', 'sick', 'maternity', 'important']);
-            $table->integer('year');
-            $table->integer('total');
-            $table->integer('used');
+            $table->integer('year')->nullable();
+            $table->integer('total')->nullable();
+            $table->integer('used')->nullable();
             $table->integer('remaining')->nullable();
             $table->timestamps();
         });
