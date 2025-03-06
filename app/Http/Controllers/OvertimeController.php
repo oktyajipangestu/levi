@@ -19,7 +19,7 @@ class OvertimeController extends Controller
         $overtimeType = OvertimeType::all();
 
         // Menampilkan view pengajuan lembur dengan data jenis lembur
-        return view('overtime.request', compact('overtimeType'));
+        return view('overtime.create', compact('overtimeType'));
     }
 
     /**

@@ -32,7 +32,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Overtime (Lembur)
     Route::prefix('overtime')->name('overtime.')->group(function () {
         Route::get('/history', [OvertimeController::class, 'history'])->name('history');
-        Route::get('/request', [OvertimeController::class, 'create'])->name('create');
+        Route::get('/create', [OvertimeController::class, 'create'])->name('create');
         Route::post('/', [OvertimeController::class, 'store'])->name('store');
         Route::get('/approval', [OvertimeController::class, 'indexApproval'])->name('approval');
         Route::patch('/{id}/status', [OvertimeController::class, 'updateStatus'])->name('updateStatus');
