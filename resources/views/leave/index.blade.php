@@ -79,7 +79,7 @@
                 </div>
             </div>
             <div>
-                <table class="table">
+                <table class="table table-responsive">
                     <thead>
                         <tr class="table-light">
                             <th scope="col">TYPES OF LEAVE</th>
@@ -114,7 +114,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td>{{ $request->reason }}</td>
+                                <td>{{ Str::limit($request->reason, 100, '...') }}</td>
                                 <td>
                                     <div class="d-flex justify-content-between">
                                         <div class="d-flex text-center">
@@ -136,7 +136,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <a href=""><i class="bi bi-eye-fill"></i> View Detail</a>
+                                    <a class="text-center" style="text-decoration: none;" href="{{ route('leave.show', $request->id) }}"><img class="mx-auto" width="25px" src="{{ asset('images/icon/eye.svg') }}" alt="Lihat Detail"> Lihat</a>
                                 </td>
                             </tr>
                         @empty
@@ -232,7 +232,7 @@
                             </div>
                         </div>
 
-                        <table class="table">
+                        <table class="table table-responsive">
                             <thead>
                                 <tr class="table-light">
                                     <th scope="col">TYPES OF LEAVE</th>
@@ -267,7 +267,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>{{ $request->reason }}</td>
+                                        <td>{{ Str::limit($request->reason, 100, '...') }}</td>
                                         <td>
                                             <div class="d-flex justify-content-between">
                                                 <div class="d-flex text-center">
@@ -308,7 +308,7 @@
                             <div class="col">
                                 <div class="rounded-4 p-4" style="background-color: #F7F7F7">
                                     <div class="d-flex justify-content-between">
-                                        <h2 class="fw-bold">{{ $count_approval['approve'] + $count_approval['approve'] + $count_approval['pending']}}</h2>
+                                        <h2 class="fw-bold">{{ $count_approval['approve'] + $count_approval['reject'] + $count_approval['pending']}}</h2>
                                         <div>
                                             <img src="{{ asset('images/icon/person.svg') }}" alt="person">
                                         </div>
@@ -359,7 +359,7 @@
                             </div>
                         </div>
 
-                        <table class="table">
+                        <table class="table table-responsive">
                             <thead>
                                 <tr class="table-light">
                                     <th scope="col">REQUESTED BY</th>
@@ -407,7 +407,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>{{ $approval->reason }}</td>
+                                        <td>{{ Str::limit($approval->reason, 100, '...') }}</td>
                                         <td>
                                             @if ($approval->status_supervisor == "reject")
                                                 <div>

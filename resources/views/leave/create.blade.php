@@ -129,22 +129,22 @@
                                     Annual Leave Balance
                                 </div>
                                 <div>
-                                    @if ($annual_leaves->isEmpty())
-                                        0/12
+                                    @if ($annual_leaves)
+                                        {{ $annual_leaves->remaining }} / {{ $annual_leaves->total }}
                                     @else
-                                        {{ $annual_leaves['used'] }}
+                                        0/12
                                     @endif
                                 </div>
                             </div>
-                            @if ($annual_leaves->isEmpty())
+                            @if ($annual_leaves)
+                                <div class="progress mt-2" role="progressbar" aria-label="Example 20px high" aria-valuenow="{{ $annual_leaves['remaining'] / 12 * 100 }}"
+                                aria-valuemin="0" aria-valuemax="12" style="height: 20px">
+                                    <div class="progress-bar" style="width: {{ $annual_leaves['remaining'] / 12 * 100 }}%"></div>
+                                </div>
+                            @else
                                 <div class="progress mt-2" role="progressbar" aria-label="Example 20px high" aria-valuenow="0"
                                     aria-valuemin="0" aria-valuemax="12" style="height: 20px">
                                     <div class="progress-bar" style="width: 0%"></div>
-                                </div>
-                            @else
-                                <div class="progress mt-2" role="progressbar" aria-label="Example 20px high" aria-valuenow="{{ $annual_leaves['used'] / 12 * 100 }}"
-                                    aria-valuemin="0" aria-valuemax="12" style="height: 20px">
-                                    <div class="progress-bar" style="width: {{ $annual_leaves['used'] / 12 * 100 }}%"></div>
                                 </div>
                             @endif
                         </div>
