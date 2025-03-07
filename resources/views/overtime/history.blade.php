@@ -27,6 +27,7 @@
                     <div class="rounded-4 p-4" style="background-color: #F7F7F7">
                         <div class="d-flex justify-content-between">
                             {{-- <h2 class="fw-bold">{{ $approved + $pending + $rejected }}</h2> --}}
+                            <h2 class="fw-bold">0</h2>
                             <div>
                                 <img src="{{ asset('images/icon/person.svg') }}" alt="person">
                             </div>
@@ -40,6 +41,7 @@
                     <div class="rounded-4 p-4" style="background-color: #F7F7F7">
                         <div class="d-flex justify-content-between">
                             {{-- <h2 class="fw-bold">{{ $approved }}</h2> --}}
+                            <h2 class="fw-bold">0</h2>
                             <div>
                                 <img src="{{ asset('images/icon/check.svg') }}" alt="person">
                             </div>
@@ -53,6 +55,7 @@
                     <div class="rounded-4 p-4" style="background-color: #F7F7F7">
                         <div class="d-flex justify-content-between">
                             {{-- <h2 class="fw-bold">{{ $rejected }}</h2> --}}
+                            <h2 class="fw-bold">0</h2>
                             <div>
                                 <img src="{{ asset('images/icon/cross.svg') }}" alt="person">
                             </div>
@@ -66,6 +69,7 @@
                     <div class="rounded-4 p-4" style="background-color: #F7F7F7">
                         <div class="d-flex justify-content-between">
                             {{-- <h2 class="fw-bold">{{ $pending }}</h2> --}}
+                            <h2 class="fw-bold">0</h2>
                             <div>
                                 <img src="{{ asset('images/icon/time.svg') }}" alt="person">
                             </div>

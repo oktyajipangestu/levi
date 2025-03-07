@@ -21,13 +21,13 @@
             <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu"
                 data-accordion="false">
                 <li class="nav-item">
-                    <a href="{{ route('dashboard') }}" class="nav-link active">
+                    <a href="{{ route('dashboard') }}" class="nav-link {{ Route::currentRouteName() == 'dashboard' ? 'active' : '' }}">
                         <img src="{{ asset('images/icon/leave-icon.svg') }}" alt="Leave">
                         <p>Leave & Time Off</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('overtime.history') }}" class="nav-link">
+                    <a href="{{ route('overtime.history') }}" class="nav-link {{ Route::currentRouteName() == 'overtime.history' ? 'active' : '' }}">
                         <img src="{{ asset('images/icon/overtime-icon.svg') }}" alt="Leave">
                         <p>Overtime</p>
                     </a>
