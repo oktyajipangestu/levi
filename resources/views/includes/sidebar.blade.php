@@ -36,7 +36,7 @@
                 @if (Auth::user()->role == 'hr')
                     <li class="nav-item">
                         <a href="{{ route('users.index') }}"
-                            class="nav-link {{ request()->is('overtime*') ? 'active' : '' }}">
+                            class="nav-link {{ request()->is('user-management*') ? 'active' : '' }}">
                             <img src="{{ asset('images/icon/user.svg') }}" alt="Leave">
                             <p>User Management</p>
                         </a>
