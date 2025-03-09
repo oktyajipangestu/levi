@@ -3,6 +3,7 @@
 use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\LeaveRequestController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserManagementController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -29,8 +30,13 @@ Route::middleware(['auth'])->group(function () {
     ]);
 });
 
-// Route::middleware(['auth', 'role:hr'])->group(function () {
-//     Route::get('/dashboard-hr', [LeaveController::class, 'leaveHr'])->name('dashboard');
-// });
+Route::middleware(['auth', 'role:hr'])->group(function () {
+    Route::get('/user-management', [UserManagementController::class, 'index'])->name('users.index');
+    Route::get('/user-management/create', [UserManagementController::class, 'create'])->name('users.create');
+    Route::post('/user-management', [UserManagementController::class, 'store'])->name('users.store');
+    Route::put('/user-management/{id}', [UserManagementController::class, 'update'])->name('users.update');
+    Route::get('/user-management/{id}/edit', [UserManagementController::class, 'edit'])->name('users.edit');
+    Route::delete('/user-management/{id}', [UserManagementController::class, 'delete'])->name('users.destroy');
+});
 
 require __DIR__.'/auth.php';
