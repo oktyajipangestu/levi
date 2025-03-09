@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use App\Models\UserProfile;
+use App\Models\OvertimeType;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -16,10 +17,10 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+        ]);
 
         // Buat supervisor terlebih dahulu
         User::factory()->count(5)->state(function (array $attributes) {
@@ -36,6 +37,9 @@ class DatabaseSeeder extends Seeder
             return ['role' => 'employee'];
         })->create();
 
-        UserProfile::factory()->count(28)->create();
+        $this->call([
+            UserProfileSeeder::class,
+            OvertimeTypeSeeder::class,
+        ]);
     }
 }
