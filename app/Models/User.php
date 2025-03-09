@@ -46,10 +46,6 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    public function employee()
-    {
-        return $this->hasOne(Employee::class);
-    }
 
     public function userProfile()
     {
@@ -64,5 +60,15 @@ class User extends Authenticatable
     public function leaveRequest()
     {
         return $this->hasMany(LeaveRequest::class);
+    }
+
+    public function supervisor()
+    {
+        return $this->belongsTo(User::class, 'supervisor_id');
+    }
+
+    public function subordinates()
+    {
+        return $this->hasMany(User::class, 'supervisor_id');
     }
 }
