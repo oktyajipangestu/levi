@@ -1,13 +1,14 @@
 <x-guest-layout>
     <div class="flex w-full h-screen">
-        <p class="text-white text-xl absolute top-16 left-16"><strong><em>Assure your confidence</em></strong></p>
-        <div class="absolute left-0 bottom-12">
-            <img class="opacity-40 w-4/5" src="{{ asset('images/image-login-min.png') }}" alt="" srcset="">
+         <p class="text-white text-xl absolute top-16 left-16 font-light"><strong><em>Assure your confidence</em></strong></p>
+        <div class="fixed left-0 bottom-8 ">
+            <img class="opacity-40 w-full" src="{{ asset('images/image-login-min.png') }}" alt="" srcset="">
         </div>
-        <div class="w-full flex items-center bg-primary p-16">
-            <div class="text-white mb-12 z-10">
-                <h2 class="text-3xl font-bold"><em>LEVI</em></h2>
-                <h4 class="text-3xl font-extrabold"><em>Leave and Overtime Input</em></h4>
+        <div class="w-2/3 grid-rows-2 bg-primary p-10">
+            <div class="row py-20"></div>
+            <div class="row py-20 ps-40 text-white">
+                <h1 class="text-5xl font-extrabold"><em>LEVI</em></h2>
+                <h2 class="text-3xl font-bold"><em>Leave and Overtime Input</em></h4>
             </div>
         </div>
         <div class="w-full flex items-center justify-center">
