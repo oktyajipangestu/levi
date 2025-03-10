@@ -8,6 +8,7 @@ use App\Models\OvertimeTransaction;
 use App\Models\OvertimeType;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class OvertimeController extends Controller
 {
@@ -44,7 +45,7 @@ class OvertimeController extends Controller
         // Proses unggahan file
         if ($request->hasFile('supporting_document')) {
             $file = $request->file('supporting_document');
-            $filePath = $file->store('public/supporting_documents');
+            $filePath = $file->store('', 'supporting_documents');
         }
 
         // Simpan data pengajuan lembur
@@ -118,11 +119,51 @@ class OvertimeController extends Controller
 
     public function history()
     {
-        // Mengambil data pengajuan lembur dengan status 'Pending'
-        $overtime = OvertimeTransaction::where('status', 'Pending')->with('userProfile', 'overtimeType')->get();
+        $user = Auth::user();
+        $userId = $user->id;
+        $overtimeTransactions = OvertimeTransaction::whereHas('users', function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })->with('overtimeType')->paginate(10);
+
+        $rejectedCount = OvertimeTransaction::whereHas('users', function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })->where('status','reject')->count();
+
+        $pendingCount = OvertimeTransaction::whereHas('users', function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })->where('status', 'pending')->count();
+
+        $approvedCount = OvertimeTransaction::whereHas('users', function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })->where('status', 'approve')->count();
+
+        $myData = [
+            'transaction' => $overtimeTransactions,
+            'rejectedCount' => $rejectedCount,
+            'pendingCount' => $pendingCount,
+            'approvedCount' => $approvedCount,
+        ];
+        $myRequest = [];
+        if ($user->role == "supervisor") {
+
+            $requestTransaction = OvertimeTransaction::where('employee_id',$userId)->latest()->paginate(10);
+
+            $requestRejectedCount = OvertimeTransaction::where('employee_id', $userId)->where('status', 'reject')->count();
+
+            $requestPendingCount = OvertimeTransaction::where('employee_id', $userId)->where('status', 'pending')->count();
+
+            $requestApprovedCount = OvertimeTransaction::where('employee_id', $userId)->where('status', 'approve')->count();
+
+            $myRequest = [
+                'transaction' => $requestTransaction,
+                'rejectedCount' => $requestRejectedCount,
+                'pendingCount' => $requestPendingCount,
+                'approvedCount' => $requestApprovedCount
+            ];
+        }
 
         // Menampilkan view persetujuan lembur dengan data pengajuan lembur
-        return view('overtime.history', compact('overtime'));
+        return view('overtime.history', compact('myData','myRequest'));
     }
 
 

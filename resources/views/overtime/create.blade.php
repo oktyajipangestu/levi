@@ -16,7 +16,7 @@
             <div class="timeoff-header mb-4 d-flex justify-content-between px-5 py-4">
                 <h2 class="fw-bold">Overtime Request Form</h2>
                 <div>
-                    <a class="btn btn-outline-primary" href="{{ route('dashboard') }}">Cancel</a>
+                    <a class="btn btn-outline-primary" href="{{ route('overtime.history') }}">Cancel</a>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </div>
