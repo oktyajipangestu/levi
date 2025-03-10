@@ -1,15 +1,12 @@
 <?php
-
 namespace App\View\Components;
 
 use Illuminate\View\Component;
 
 class Hours extends Component
 {
-    /**
-     * Create a new component instance.
-     */
     public $duration;
+
     public function __construct($duration)
     {
         $this->duration = $duration;

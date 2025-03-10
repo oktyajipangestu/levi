@@ -269,7 +269,7 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <x-hours duration="{{ $request->duration }}"></x-hours>
+                                            <x-hours duration="{{ $request->duration }}" />
                                         </td>
                                         <td>{{ Str::limit($request->reason, 100, '...') }}</td>
                                         <td>{{ $request->supporting_document }}</td>
@@ -403,7 +403,7 @@
                                             <div>
                                                 <div class="mb-2"><small>{{ date('d-F-Y', strtotime($overtimeRequest->overtime_date)) }} </small>
                                                 </div>
-                                                <x-hours duration="{{ $overtimeRequest->duration }}"/>
+                                                <x-hours duration="{{  $overtimeRequest->duration }}"/>
                                             </div>
                                         </td>
                                         <td>
