@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Overtime;
 use App\Models\OvertimeTransaction;
 use App\Models\OvertimeType;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class OvertimeController extends Controller
@@ -15,11 +16,13 @@ class OvertimeController extends Controller
      */
     public function create()
     {
-        // Mengambil data jenis lembur untuk ditampilkan pada dropdown
-        $overtimeType = OvertimeType::all();
+        // Mendapatkan semua tipe lembur yang aktif
+        $overtimeTypes = OvertimeType::get();
 
-        // Menampilkan view pengajuan lembur dengan data jenis lembur
-        return view('overtime.create', compact('overtimeType'));
+        // Mendapatkan anggota tim di bawah supervisor yang sedang login
+        // $teamMembers = User::where('supervisor_id', Auth::id())->get();
+
+        return view('overtime.create', compact('overtimeTypes'));
     }
 
     /**
@@ -27,29 +30,53 @@ class OvertimeController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
         // Validasi data yang diterima dari form
-        $request->validate([
+        $validatedData = $request->validate([
             'overtime_date' => 'required|date',
-            'start_time' => 'required|date_format:H:i',
-            'end_time' => 'required|date_format:H:i|after:start_time',
             'overtime_type_id' => 'required|exists:overtime_types,id',
+            'selected_members' => 'required|array',
+            'selected_members.*' => 'exists:users,id',
+            'supporting_document' => 'required|file|mimes:pdf|max:512'
         ]);
 
-        // Menghitung durasi lembur dalam jam
-        $startTime = strtotime($request->start_time);
-        $endTime = strtotime($request->end_time);
-        $duration = ($endTime - $startTime) / 3600;
 
-        // Membuat pengajuan lembur baru
-        OvertimeTransaction::create([
-            'employee_id' => Auth::user()->employee->id,
+        // Proses unggahan file
+        if ($request->hasFile('supporting_document')) {
+            $file = $request->file('supporting_document');
+            $filePath = $file->store('public/supporting_documents');
+        }
+
+        // Simpan data pengajuan lembur
+        $overtimeRequest = OvertimeTransaction::create([
+            'employee_id' => Auth::id(), //as supervisor ID
             'overtime_date' => $request->overtime_date,
-            'start_time' => $request->start_time,
-            'end_time' => $request->end_time,
-            'duration' => $duration,
+            // 'start_time' => $request->start_time,
+            // 'end_time' => $request->end_time,
+            'duration' => $request->duration,
             'overtime_type_id' => $request->overtime_type_id,
             'status' => 'Pending',
+            'supporting_document_path' => $filePath ?? null,
         ]);
+
+         // Simpan anggota tim yang dipilih
+        $overtimeRequest->users()->sync($validatedData['selected_members']);
+
+        // // Menghitung durasi lembur dalam jam
+        // $startTime = strtotime($request->start_time);
+        // $endTime = strtotime($request->end_time);
+        // $duration = ($endTime - $startTime) / 3600;
+
+        // Membuat pengajuan lembur baru
+        // OvertimeTransaction::create([
+        //     'employee_id' => Auth::user()->id,
+        //     'overtime_date' => $request->overtime_date,
+        //     'start_time' => $request->overtime_date,
+        //     'end_time' => $request->end_time,
+        //     'duration' => $duration,
+        //     'overtime_type_id' => $request->overtime_type_id,
+        //     'status' => 'Pending',
+        // ]);
 
         // Redirect ke halaman riwayat lembur dengan pesan sukses
         return redirect()->route('overtime.history')->with('success', 'Overtime requested successfully.');

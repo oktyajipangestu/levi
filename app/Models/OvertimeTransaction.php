@@ -6,13 +6,30 @@ use Illuminate\Database\Eloquent\Model;
 
 class OvertimeTransaction extends Model
 {
-    public function employee()
+    protected $fillable = [
+        'employee_id',
+        'overtime_date',
+        'duration',
+        'overtime_type_id',
+        'status',
+        'supporting_document_path',
+        // Add other attributes as needed
+    ];
+
+     public function users()
     {
-        return $this->belongsTo(Employee::class);
+        return $this->belongsToMany(User::class, 'overtime_transaction_user');
     }
 
     public function overtimeType()
     {
         return $this->belongsTo(OvertimeType::class);
     }
+
+    public function userProfile()
+    {
+        return $this->hasOneThrough(UserProfile::class, User::class, 'id', 'user_id', 'employee_id', 'id');
+    }
+
+
 }
