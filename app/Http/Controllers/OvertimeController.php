@@ -6,7 +6,11 @@ use Illuminate\Http\Request;
 use App\Models\Overtime;
 use App\Models\OvertimeTransaction;
 use App\Models\OvertimeType;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+
 
 class OvertimeController extends Controller
 {
@@ -15,11 +19,13 @@ class OvertimeController extends Controller
      */
     public function create()
     {
-        // Mengambil data jenis lembur untuk ditampilkan pada dropdown
-        $overtimeType = OvertimeType::all();
+        // Mendapatkan semua tipe lembur yang aktif
+        $overtimeTypes = OvertimeType::get();
 
-        // Menampilkan view pengajuan lembur dengan data jenis lembur
-        return view('overtime.create', compact('overtimeType'));
+        // Mendapatkan anggota tim di bawah supervisor yang sedang login
+        // $teamMembers = User::where('supervisor_id', Auth::id())->get();
+
+        return view('overtime.create', compact('overtimeTypes'));
     }
 
     /**
@@ -27,29 +33,53 @@ class OvertimeController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->reason);
         // Validasi data yang diterima dari form
-        $request->validate([
+        $validatedData = $request->validate([
             'overtime_date' => 'required|date',
-            'start_time' => 'required|date_format:H:i',
-            'end_time' => 'required|date_format:H:i|after:start_time',
+            'reason' => 'required',
             'overtime_type_id' => 'required|exists:overtime_types,id',
+            'selected_members' => 'required|array',
+            'selected_members.*' => 'exists:users,id',
+            'supporting_document' => 'required|file|mimes:pdf|max:512'
         ]);
 
-        // Menghitung durasi lembur dalam jam
-        $startTime = strtotime($request->start_time);
-        $endTime = strtotime($request->end_time);
-        $duration = ($endTime - $startTime) / 3600;
 
-        // Membuat pengajuan lembur baru
-        OvertimeTransaction::create([
-            'employee_id' => Auth::user()->employee->id,
+        // Proses unggahan file
+        if ($request->hasFile('supporting_document')) {
+            $file = $request->file('supporting_document');
+            $filePath = $file->store('','supporting_documents');
+        }
+
+        // Simpan data pengajuan lembur
+        $overtimeRequest = OvertimeTransaction::create([
+            'employee_id' => Auth::id(), //as supervisor ID
             'overtime_date' => $request->overtime_date,
-            'start_time' => $request->start_time,
-            'end_time' => $request->end_time,
-            'duration' => $duration,
+            'reason' => $request->reason,
+            'duration' => $request->duration,
             'overtime_type_id' => $request->overtime_type_id,
             'status' => 'Pending',
+            'supporting_document_path' => $filePath ?? null,
         ]);
+
+         // Simpan anggota tim yang dipilih
+        $overtimeRequest->users()->sync($validatedData['selected_members']);
+
+        // // Menghitung durasi lembur dalam jam
+        // $startTime = strtotime($request->start_time);
+        // $endTime = strtotime($request->end_time);
+        // $duration = ($endTime - $startTime) / 3600;
+
+        // Membuat pengajuan lembur baru
+        // OvertimeTransaction::create([
+        //     'employee_id' => Auth::user()->id,
+        //     'overtime_date' => $request->overtime_date,
+        //     'start_time' => $request->overtime_date,
+        //     'end_time' => $request->end_time,
+        //     'duration' => $duration,
+        //     'overtime_type_id' => $request->overtime_type_id,
+        //     'status' => 'Pending',
+        // ]);
 
         // Redirect ke halaman riwayat lembur dengan pesan sukses
         return redirect()->route('overtime.history')->with('success', 'Overtime requested successfully.');
@@ -91,12 +121,70 @@ class OvertimeController extends Controller
 
     public function history()
     {
-        // Mengambil data pengajuan lembur dengan status 'Pending'
-        $overtime = OvertimeTransaction::where('status', 'Pending')->with('userProfile', 'overtimeType')->get();
+        $user = Auth::user();
+        $userId = $user->id;
+        $overtimeTransactions = OvertimeTransaction::whereHas('users', function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })->with('overtimeType')->paginate(10);
+
+        $rejectedCount = OvertimeTransaction::whereHas('users', function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })->where('status','reject')->count();
+
+        $pendingCount = OvertimeTransaction::whereHas('users', function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })->where('status', 'pending')->count();
+
+        $approvedCount = OvertimeTransaction::whereHas('users', function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })->where('status', 'approve')->count();
+
+        $myData = [
+            'transaction' => $overtimeTransactions,
+            'rejectedCount' => $rejectedCount,
+            'pendingCount' => $pendingCount,
+            'approvedCount' => $approvedCount,
+        ];
+        $myRequest = [];
+        if ($user->role == "supervisor") {
+
+            $requestTransaction = OvertimeTransaction::where('employee_id',$userId)->with('userProfile')->with('users')->latest()->paginate(10);
+
+            $requestRejectedCount = OvertimeTransaction::where('employee_id', $userId)->where('status', 'reject')->count();
+
+            $requestPendingCount = OvertimeTransaction::where('employee_id', $userId)->where('status', 'pending')->count();
+
+            $requestApprovedCount = OvertimeTransaction::where('employee_id', $userId)->where('status', 'approve')->count();
+
+            $myRequest = [
+                'transaction' => $requestTransaction,
+                'rejectedCount' => $requestRejectedCount,
+                'pendingCount' => $requestPendingCount,
+                'approvedCount' => $requestApprovedCount
+            ];
+        }
 
         // Menampilkan view persetujuan lembur dengan data pengajuan lembur
-        return view('overtime.history', compact('overtime'));
+        return view('overtime.history', compact('myData','myRequest'));
     }
+
+    public function download($filename)
+    {
+        $path = storage_path('app/public/'. $filename);
+
+        if (!File::exists($path)) {
+            abort(404, 'File not found');
+        }
+
+        $headers = [
+            'Content-Type' => File::mimeType($path),
+            'Content-Disposition' => 'attachment; filename="'. pathinfo($path, PATHINFO_FILENAME). '.'. pathinfo($path, PATHINFO_EXTENSION). '"',
+        ];
+
+        return response()->download($path, $filename, $headers);
+    }
+
+
 
 
 }

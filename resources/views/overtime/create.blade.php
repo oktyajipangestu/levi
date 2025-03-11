@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="m-3 bg-white rounded-lg">
-        <form action="{{ route('overtime.store') }}" method="post">
+        <form action="{{ route('overtime.store') }}" method="post"  enctype="multipart/form-data">
             @csrf
             @if ($errors->any())
                 <div class="alert alert-danger mb-0">
@@ -16,7 +16,7 @@
             <div class="timeoff-header mb-4 d-flex justify-content-between px-5 py-4">
                 <h2 class="fw-bold">Overtime Request Form</h2>
                 <div>
-                    <a class="btn btn-outline-primary" href="{{ route('dashboard') }}">Cancel</a>
+                    <a class="btn btn-outline-primary" href="{{ route('overtime.history') }}">Cancel</a>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </div>
@@ -31,33 +31,38 @@
                             <x-alert message="Maximum overtime per day is 8 hours." icon="bi bi-info-circle-fill text-primary me-2" />
 
                             <label for="type" class="form-label">Types of Overtime</label>
-                            <select name="type" class="form-select" aria-label="Types of Overtime">
-                                <option value="annual">Team Planning</option>
+                            <select name="overtime_type_id" class="form-select" aria-label="Types of Overtime">
+                                @foreach ($overtimeTypes as $type)
+                                    <option value="{{ $type->id }}" {{ old('overtime_type_id') == $type->id ? 'selected' : '' }}>
+                                        {{ $type->type }}
+                                    </option>
+                                @endforeach
                             </select>
-                            @error('type')
+                            @error('overtime_type_id')
                                 <div id="validationType" class="invalid-feedback">
                                     {{ $message }}
                                 </div>
                             @enderror
+
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Overtime Date</label>
                             <div class="row">
                                 <div class="col">
-                                    <label class="visually-hidden" for="begin">Begin</label>
+                                    <label class="visually-hidden" for="overtime_date">overtime_date</label>
                                     <div class="input-group">
-                                        <input name="start_date" type="date" class="form-control" id="begin" placeholder="Start Date" value="{{ old('start_date') }}">
+                                        <input name="overtime_date" type="date" class="form-control" id="overtime_date" placeholder="Start Date" value="{{ old('overtime_date') }}">
                                     </div>
-                                    @error('start_date')
+                                    @error('overtime_date')
                                         <div id="validationType" class="invalid-feedback">
-                                            {{ $message }} tes
+                                            {{ $message }}
                                         </div>
                                     @enderror
                                 </div>
                                 <div class="col">
                                     <label class="visually-hidden" for="duration">Duration</label>
                                     <div class="input-group mb-3">
-                                    <select name="type" class="form-control" aria-label="Duration Hour">
+                                        <select id="duration" name="duration" class="form-control" aria-label="Duration Hour">
                                             <option value="1">1</option>
                                             <option value="2">2</option>
                                             <option value="3">3</option>
@@ -67,26 +72,9 @@
                                             <option value="7">7</option>
                                             <option value="8">8</option>
                                         </select>
-                                    <span class="input-group-text" id="basic-addon2">Hour</span>
+                                        <span class="input-group-text" id="basic-addon2">Hour</span>
                                     </div>
-                                        {{-- <label for="exampleSelect" class="mr-2">Pilih Opsi:</label>
-                                        <select id="exampleSelect" class="form-control" name="exampleSelect">
-                                            <option value="1">Opsi 1</option>
-                                            <option value="2">Opsi 2</option>
-                                            <option value="3">Opsi 3</option>
-                                        </select>
-                                        {{-- <select name="type" class="form-group" aria-label="Duration Hour">
-                                            <option value="annual">1</option>
-                                            <option value="annual">2</option>
-                                            <option value="annual">3</option>
-                                            <option value="annual">4</option>
-                                            <option value="annual">5</option>
-                                            <option value="annual">6</option>
-                                            <option value="annual">7</option>
-                                            <option value="annual">8</option>
-                                        </select>
-                                        <label class="form-group" for="hour">Hour</label> --
-                                    </div> --}}
+
                                     @error('end_date')
                                         <div id="validationType" class="invalid-feedback">
                                             {{ $message }}
@@ -97,47 +85,26 @@
                         </div>
                         <div class="mb-3">
                             <label for="reason" class="form-label">Reason for Overtime</label>
-                            <textarea name="reason" class="form-control" id="reason" rows="3">{{ old('reason') }}</textarea>
+                            <textarea name="reason" class="form-control" id="reason" rows="3"></textarea>
                             @error('reason')
                                 <div id="validationType" class="invalid-feedback">
-                                    {{ $message }} tes
+                                    {{ $message }}
                                 </div>
                             @enderror
                         </div>
                     </div>
                     <div class="col px-5 py-4">
-                        <div>
-                            <div class="d-flex justify-content-between">
-                                <div>
-
-                                </div>
-                                <div>
-                                    {{-- @if ($annual_leaves->isEmpty())
-                                        0/12
-                                    @else
-                                        {{ $annual_leaves['used'] }}
-                                    @endif --}}
-                                </div>
-                            </div>
-                            {{-- @if ($annual_leaves->isEmpty())
-                                <div class="progress mt-2" role="progressbar" aria-label="Example 20px high" aria-valuenow="0"
-                                    aria-valuemin="0" aria-valuemax="12" style="height: 20px">
-                                    <div class="progress-bar" style="width: 0%"></div>
-                                </div>
-                            @else
-                                <div class="progress mt-2" role="progressbar" aria-label="Example 20px high" aria-valuenow="{{ $annual_leaves['used'] / 12 * 100 }}"
-                                    aria-valuemin="0" aria-valuemax="12" style="height: 20px">
-                                    <div class="progress-bar" style="width: {{ $annual_leaves['used'] / 12 * 100 }}%"></div>
-                                </div>
-                            @endif --}}
-                        </div>
                         <div class="my-3">
                             <div>
                                 <h4 class="fw-bold" style="color: #4343FF">ATTACHMENT</h4>
                             </div>
                             <div>
                                 <div class="card mb-3">
-                                    <button class="btn btn-outline-primary w-100">Upload Overtime Report</button>
+                                    {{-- <button class="btn btn-outline-primary w-100">Upload Overtime Report</button> --}}
+                                     <div class="form-group">
+                                        <label for="supporting_document">Unggah Dokumen Pendukung (PDF, maks. 500KB):</label>
+                                        <input type="file" name="supporting_document" accept=".pdf" class="form-control" required>
+                                    </div>
                                 </div>
                                 <div class="mt-3">
                                     <h4 class="fw-bold" style="color: #4343FF">TEAM MEMBERS</h4>
@@ -149,16 +116,27 @@
                                         <x-alert message="{{ Auth::user()->name }}" icon="" />
                                     </div>
                                     <div>
-                                        <label for="type" class="form-label">Members</label>
-                                        <select name="type" class="form-select" aria-label="Team Members">
-                                            <option @readonly(true)>Select Member</option>
-                                            <option value="">June Cruickshank</option>
-                                            <option value="">Adriel Skiles</option>
-                                            <option value="">Ruben Marvin</option>
-                                            <option value="">Krystina Orn </option>
-                                            <option value="">Rasheed Daniel </option>
-                                            <option value="">Nicholas Kemmer</option>
+                                        <label for="team_members" class="form-label">Members</label>
+                                        <livewire:team-member-selector />
+                                        @error('team_members')
+                                            <div id="validationTeamMembers" class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                        {{-- <label for="team_members" class="form-label">Members</label>
+                                        <select name="team_members[]" class="form-select" aria-label="Team Members">
+                                            @foreach ($teamMembers as $member)
+                                                <option value="{{ $member->id }}" {{ in_array($member->id, old('team_members', [])) ? 'selected' : '' }}>
+                                                    {{ $member->name }}
+                                                </option>
+                                            @endforeach
                                         </select>
+                                        @error('team_members')
+                                            <div id="validationTeamMembers" class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror --}}
+
                                     </div>
                                 </div>
                                 {{-- @forelse ($list_request as $leave)

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\UserProfile;
 
 class UserProfileSeeder extends Seeder
 {
@@ -13,5 +14,6 @@ class UserProfileSeeder extends Seeder
     public function run(): void
     {
         //
+        UserProfile::factory()->count(28)->create();
     }
 }

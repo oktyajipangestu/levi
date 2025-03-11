@@ -26,8 +26,8 @@
                 <div class="col">
                     <div class="rounded-4 p-4" style="background-color: #F7F7F7">
                         <div class="d-flex justify-content-between">
-                            {{-- <h2 class="fw-bold">{{ $approved + $pending + $rejected }}</h2> --}}
-                            <h2 class="fw-bold">0</h2>
+                            <h2 class="fw-bold">{{ $myData['approvedCount'] + $myData['pendingCount'] + $myData['rejectedCount'] }}</h2>
+                            {{-- <h2 class="fw-bold">0</h2> --}}
                             <div>
                                 <img src="{{ asset('images/icon/person.svg') }}" alt="person">
                             </div>
@@ -40,8 +40,8 @@
                 <div class="col">
                     <div class="rounded-4 p-4" style="background-color: #F7F7F7">
                         <div class="d-flex justify-content-between">
-                            {{-- <h2 class="fw-bold">{{ $approved }}</h2> --}}
-                            <h2 class="fw-bold">0</h2>
+                            <h2 class="fw-bold">{{ $myData['approvedCount'] }}</h2>
+                            {{-- <h2 class="fw-bold">0</h2> --}}
                             <div>
                                 <img src="{{ asset('images/icon/check.svg') }}" alt="person">
                             </div>
@@ -54,8 +54,8 @@
                 <div class="col">
                     <div class="rounded-4 p-4" style="background-color: #F7F7F7">
                         <div class="d-flex justify-content-between">
-                            {{-- <h2 class="fw-bold">{{ $rejected }}</h2> --}}
-                            <h2 class="fw-bold">0</h2>
+                            <h2 class="fw-bold">{{ $myData['rejectedCount'] }}</h2>
+                            {{-- <h2 class="fw-bold">0</h2> --}}
                             <div>
                                 <img src="{{ asset('images/icon/cross.svg') }}" alt="person">
                             </div>
@@ -68,8 +68,8 @@
                 <div class="col">
                     <div class="rounded-4 p-4" style="background-color: #F7F7F7">
                         <div class="d-flex justify-content-between">
-                            {{-- <h2 class="fw-bold">{{ $pending }}</h2> --}}
-                            <h2 class="fw-bold">0</h2>
+                            <h2 class="fw-bold">{{ $myData['pendingCount'] }}</h2>
+                            {{-- <h2 class="fw-bold">0</h2> --}}
                             <div>
                                 <img src="{{ asset('images/icon/time.svg') }}" alt="person">
                             </div>
@@ -95,59 +95,47 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {{-- @forelse ($list_request as $request)
-                            <tr>
-                                <th><strong>{{ $request->type == 'annual' ? 'ANNUAL LEAVE' : ($request->type == 'big' ? 'BIG LEAVE' : ($request->type == 'sick' ? 'SICK LEAVE' : 'IMPORTANT LEAVE')) }}</strong>
-                                </th>
-                                <td>{{ date('d-F-Y', strtotime($request->created_at)) }}</td>
-                                <td>
-                                    <div class="d-flex justify-content-between">
-                                        <div class="d-flex">
-                                            <div>
-                                                <div class="mb-2"><small>Begin</small></div>
-                                                <span class="rounded px-2 py-1"
-                                                    style="background-color: #F3F3FF"><small>{{ date('d-F-Y', strtotime($request->start_date)) }}</small></span>
+                          @forelse ($myData['transaction'] as $request)
+                                    <tr>
+                                        <td><strong>{{ $request->overtimeType->type }}</strong>
+                                        </td>
+                                        <td>{{ date('d-F-Y', strtotime($request->created_at)) }}</td>
+                                        <td>
+
+                                            <div class="d-flex">
+                                                <div>
+                                                    <div class="mb-2"><small>Submissed By</small></div>
+                                                    <span class="rounded px-2 py-1"
+                                                        style="background-color: #F3F3FF"><small>{{ date('d-F-Y', strtotime($request->start_date)) }}</small></span>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="d-flex">
-                                            <div>
-                                                <div class="mb-2"><small>End</small></div>
-                                                <span class="rounded px-2 py-1"
-                                                    style="background-color: #F3F3FF"><small>{{ date('d-F-Y', strtotime($request->end_date)) }}</small></span>
+                                        </td>
+                                        <td>
+                                            <x-hours duration="{{ $request->duration }}" />
+                                        </td>
+                                        <td>{{ Str::limit($request->reason, 100, '...') }}</td>
+                                        <td>{{ $request->supporting_document }}</td>
+                                        <td>
+                                            <div class="d-flex justify-content-between">
+                                                <div class="d-flex text-center">
+                                                    <div>
+                                                        <div class="mb-2"><small>Human <br>
+                                                                Resources</small></div>
+                                                        <img src="{{ asset('images/icon/' . $request->status . '.svg') }}"
+                                                            alt="">
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>{{ $request->reason }}</td>
-                                <td>
-                                    <div class="d-flex justify-content-between">
-                                        <div class="d-flex text-center">
-                                            <div>
-                                                <div class="mb-2"><small>Direct <br>
-                                                        Supervisor</small></div>
-                                                <img src="{{ asset('images/icon/' . $request->status_supervisor . '.svg') }}"
-                                                    alt="">
-                                            </div>
-                                        </div>
-                                        <div class="d-flex text-center">
-                                            <div>
-                                                <div class="mb-2"><small>Human <br>
-                                                        Resources</small></div>
-                                                <img src="{{ asset('images/icon/' . $request->status_hr . '.svg') }}"
-                                                    alt="">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <a href=""><i class="bi bi-eye-fill"></i> View Detail</a>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="6" class="text-center">Belum ada pengajuan cuti sebelumnya</td>
-                            </tr>
-                        @endforelse --}}
+                                        </td>
+                                        <td>
+                                            <a class="text-center" href="{{ route('overtime.show', $request->id) }}"><img class="mx-auto" width="25px" src="{{ asset('images/icon/eye.svg') }}" alt="Lihat Detail"></a>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="8" class="text-center">Belum ada pengajuan lembur sebelumnya</td>
+                                    </tr>
+                            @endforelse
                     </tbody>
                 </table>
 
@@ -174,17 +162,18 @@
                                 <button type="button" class="btn btn-outline-primary">Filter <i
                                         class="bi bi-filter"></i></button>
                             </div>
-                            <div>
+                            {{-- <div>
                                 <a href="{{ route('overtime.create') }}" class="btn btn-primary">Input Overtime Request</a>
-                            </div>
+                            </div> --}}
+
                         </div>
 
                         <div class="card-wrapper row mb-4">
                             <div class="col">
                                 <div class="rounded-4 p-4" style="background-color: #F7F7F7">
                                     <div class="d-flex justify-content-between">
-                                        {{-- <h2 class="fw-bold">{{ $approved + $pending + $rejected }}</h2> --}}
-                                        <h2 class="fw-bold">0</h2>
+                                        <h2 class="fw-bold">{{ $myData['approvedCount'] + $myData['pendingCount'] + $myData['rejectedCount'] }}</h2>
+                                        {{-- <h2 class="fw-bold">0</h2> --}}
                                         <div>
                                             <img src="{{ asset('images/icon/person.svg') }}" alt="person">
                                         </div>
@@ -197,8 +186,8 @@
                             <div class="col">
                                 <div class="rounded-4 p-4" style="background-color: #F7F7F7">
                                     <div class="d-flex justify-content-between">
-                                        {{-- <h2 class="fw-bold">{{ $approved }}</h2> --}}
-                                        <h2 class="fw-bold">0</h2>
+                                        <h2 class="fw-bold">{{ $myData['approvedCount'] }}</h2>
+                                        {{-- <h2 class="fw-bold">0</h2> --}}
                                         <div>
                                             <img src="{{ asset('images/icon/check.svg') }}" alt="person">
                                         </div>
@@ -211,8 +200,8 @@
                             <div class="col">
                                 <div class="rounded-4 p-4" style="background-color: #F7F7F7">
                                     <div class="d-flex justify-content-between">
-                                        {{-- <h2 class="fw-bold">{{ $rejected }}</h2> --}}
-                                        <h2 class="fw-bold">0</h2>
+                                        <h2 class="fw-bold">{{ $myData['rejectedCount'] }}</h2>
+                                        {{-- <h2 class="fw-bold">0</h2> --}}
                                         <div>
                                             <img src="{{ asset('images/icon/cross.svg') }}" alt="person">
                                         </div>
@@ -225,8 +214,8 @@
                             <div class="col">
                                 <div class="rounded-4 p-4" style="background-color: #F7F7F7">
                                     <div class="d-flex justify-content-between">
-                                        {{-- <h2 class="fw-bold">{{ $pending }}</h2> --}}
-                                        <h2 class="fw-bold">0</h2>
+                                        <h2 class="fw-bold">{{ $myData['pendingCount'] }}</h2>
+                                        {{-- <h2 class="fw-bold">0</h2> --}}
                                         <div>
                                             <img src="{{ asset('images/icon/time.svg') }}" alt="person">
                                         </div>
@@ -238,7 +227,7 @@
                             </div>
                         </div>
 
-                        <table class="table">
+                        <table class="table table-responsive">
                             <thead>
                                 <tr class="table-light">
                                     <th scope="col">TYPES OF OVERTIME</th>
@@ -252,37 +241,33 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{-- @forelse ($list_request as $request)
+                                @forelse ($myData['transaction'] as $request)
                                     <tr>
-                                        <th><strong>{{ $request->type == 'annual' ? 'ANNUAL LEAVE' : ($request->type == 'big' ? 'BIG LEAVE' : ($request->type == 'sick' ? 'SICK LEAVE' : 'IMPORTANT LEAVE')) }}</strong>
-                                        </th>
+                                        <td><strong>{{ $request->overtimeType->type }}</strong>
+                                        </td>
                                         <td>{{ date('d-F-Y', strtotime($request->created_at)) }}</td>
                                         <td>
-                                            <div class="d-flex justify-content-between">
-                                                <div class="d-flex">
-                                                    <div>
-                                                        <div class="mb-2"><small>Begin</small></div>
-                                                        <span class="rounded px-2 py-1"
-                                                            style="background-color: #F3F3FF"><small>{{ date('d-F-Y', strtotime($request->start_date)) }}</small></span>
-                                                    </div>
-                                                </div>
-                                                <div class="d-flex">
-                                                    <div>
-                                                        <div class="mb-2"><small>End</small></div>
-                                                        <span class="rounded px-2 py-1"
-                                                            style="background-color: #F3F3FF"><small>{{ date('d-F-Y', strtotime($request->end_date)) }}</small></span>
-                                                    </div>
+
+                                            <div class="d-flex">
+                                                <div>
+                                                    <div class="mb-2"><small>Submissed By</small></div>
+                                                    <span class="rounded px-2 py-1"
+                                                        style="background-color: #F3F3FF"><small>{{ date('d-F-Y', strtotime($request->start_date)) }}</small></span>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>{{ $request->reason }}</td>
+                                        <td>
+                                            <x-hours duration="{{ $request->duration }}" />
+                                        </td>
+                                        <td>{{ Str::limit($request->reason, 100, '...') }}</td>
+                                        <td>{{ $request->supporting_document }}</td>
                                         <td>
                                             <div class="d-flex justify-content-between">
                                                 <div class="d-flex text-center">
                                                     <div>
                                                         <div class="mb-2"><small>Human <br>
                                                                 Resources</small></div>
-                                                        <img src="{{ asset('images/icon/' . $request->status_hr . '.svg') }}"
+                                                        <img src="{{ asset('images/icon/' . $request->status . '.svg') }}"
                                                             alt="">
                                                     </div>
                                                 </div>
@@ -294,13 +279,13 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" class="text-center">Belum ada pengajuan cuti sebelumnya</td>
+                                        <td colspan="8" class="text-center">Belum ada pengajuan lembur sebelumnya</td>
                                     </tr>
-                                @endforelse --}}
+                                @endforelse
                             </tbody>
                         </table>
 
-                        {{-- {{ $list_request->links() }} --}}
+                        {{ $myData['transaction']->links() }}
                     </div>
                     {{-- APPROVAL --}}
                     <div class="tab-pane fade" id="nav-approval" role="tabpanel" aria-labelledby="nav-approval-tab" tabindex="0">
@@ -310,14 +295,16 @@
                                 <button type="button" class="btn btn-outline-primary">Filter <i
                                         class="bi bi-filter"></i></button>
                             </div>
+                            <div>
+                                <a href="{{ route('overtime.create') }}" class="btn btn-primary">Input Overtime Request</a>
+                            </div>
                         </div>
 
                         <div class="card-wrapper row mb-4">
                             <div class="col">
                                 <div class="rounded-4 p-4" style="background-color: #F7F7F7">
                                     <div class="d-flex justify-content-between">
-                                        {{-- <h2 class="fw-bold">{{ $count_approval['approve'] + $count_approval['approve'] + $count_approval['pending']}}</h2> --}}
-                                        <h2 class="fw-bold">0</h2>
+                                        <h2 class="fw-bold">{{ $myRequest['approvedCount'] + $myRequest['rejectedCount'] + $myRequest['pendingCount']}}</h2>
                                         <div>
                                             <img src="{{ asset('images/icon/person.svg') }}" alt="person">
                                         </div>
@@ -330,8 +317,7 @@
                             <div class="col">
                                 <div class="rounded-4 p-4" style="background-color: #F7F7F7">
                                     <div class="d-flex justify-content-between">
-                                        {{-- <h2 class="fw-bold">{{ $count_approval['approve'] }}</h2> --}}
-                                        <h2 class="fw-bold">0</h2>
+                                        <h2 class="fw-bold">{{ $myRequest['approvedCount'] }}</h2>
                                         <div>
                                             <img src="{{ asset('images/icon/check.svg') }}" alt="person">
                                         </div>
@@ -344,8 +330,7 @@
                             <div class="col">
                                 <div class="rounded-4 p-4" style="background-color: #F7F7F7">
                                     <div class="d-flex justify-content-between">
-                                        {{-- <h2 class="fw-bold">{{ $count_approval['reject'] }}</h2> --}}
-                                        <h2 class="fw-bold">0</h2>
+                                        <h2 class="fw-bold">{{ $myRequest['rejectedCount'] }}</h2>
                                         <div>
                                             <img src="{{ asset('images/icon/cross.svg') }}" alt="person">
                                         </div>
@@ -358,8 +343,7 @@
                             <div class="col">
                                 <div class="rounded-4 p-4" style="background-color: #F7F7F7">
                                     <div class="d-flex justify-content-between">
-                                        {{-- <h2 class="fw-bold">{{ $count_approval['pending'] }}</h2> --}}
-                                        <h2 class="fw-bold">0</h2>
+                                        <h2 class="fw-bold">{{ $myRequest['pendingCount'] }}</h2>
                                         <div>
                                             <img src="{{ asset('images/icon/time.svg') }}" alt="person">
                                         </div>
@@ -385,75 +369,97 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{-- @forelse ($list_approval as $approval)
+                                @forelse ($myRequest['transaction'] as $overtimeRequest)
                                     <tr>
-                                        <td>
+                                        <td><strong>{{ $overtimeRequest->overtimeType->type }}</strong></td>
+                                        <td>{{ date('d-F-Y', strtotime($overtimeRequest->created_at)) }}</td>
+
+                                        {{-- <td>
                                             <div>
                                                 <div>
-                                                    <div class="mb-2">{{ $approval->user->name }}</div>
+                                                    <div class="mb-2">{{ $overtimeRequest->userProfile->name }}</div>
                                                     <span class="rounded px-2 py-1"
-                                                        style="background-color: #F3F3FF"><small>{{ $approval->user->userProfile->nip }}</small></span>
+                                                        style="background-color: #F3F3FF"><small>{{ $overtimeRequest->userProfile->nip }}</small></span>
                                                 </div>
                                                 <div class="mt-4">
-                                                    <div class="mb-2"><small>Postion - Dept</small></div>
-                                                    {{ $approval->user->userProfile->position }} - {{ $approval->user->department }}
+                                                    <div class="mb-2"><small>Position - Dept</small></div>
+                                                    {{ $overtimeRequest->userProfile->position }} - {{ $overtimeRequest->userProfile->department }}
                                                 </div>
                                             </div>
+                                        </td> --}}
+                                        <td>
+                                            {{-- {{ dd($overtimeRequest->users) }} --}}
+                                            <small>Submissed by</small>
+                                            <div class="mb-2"><b>{{ $overtimeRequest->userProfile->user->name }}</b></div>
+                                            <x-hours duration="{{ $overtimeRequest->userProfile->position }}" class="mb-2   "/>
+
+                                            <small>Team Member</small>
+                                            @foreach ( $overtimeRequest->users as $member )
+                                                <li><b>{{ $member->name }}</b></li>
+                                            @endforeach
+
+
                                         </td>
-                                        <th><strong>{{ $approval->type == 'annual' ? 'ANNUAL LEAVE' : ($approval->type == 'big' ? 'BIG LEAVE' : ($approval->type == 'sick' ? 'SICK LEAVE' : 'IMPORTANT LEAVE')) }}</strong>
-                                        </th>
-                                        <td>{{ date('d-F-Y', strtotime($approval->created_at)) }}</td>
+                                        <td>
+                                            <div>
+                                                <div class="mb-2"><small>{{ date('d-F-Y', strtotime($overtimeRequest->overtime_date)) }} </small>
+                                                </div>
+                                                <x-hours duration="{{  $overtimeRequest->duration }}"/>
+                                            </div>
+                                        </td>
+
+                                        <td>{{ Str::limit($overtimeRequest->reason, 100, '...') }}</td>
+                                        <td><a class="text-center btn btn-primary -ml-px" target="_blank"
+                                            href="{{ route('overtime.download', ['filename' => $overtimeRequest->supporting_document_path]) }} "
+                                            ><i class="bi bi-file-pdf"></i> Report.pdf</a></td>
                                         <td>
                                             <div class="d-flex justify-content-between">
-                                                <div class="d-flex">
+                                                <div class="d-flex text-center">
                                                     <div>
-                                                        <div class="mb-2"><small>Begin</small></div>
-                                                        <span class="rounded px-2 py-1"
-                                                            style="background-color: #F3F3FF"><small>{{ date('d-F-Y', strtotime($approval->start_date)) }}</small></span>
-                                                    </div>
-                                                </div>
-                                                <div class="d-flex">
-                                                    <div>
-                                                        <div class="mb-2"><small>End</small></div>
-                                                        <span class="rounded px-2 py-1"
-                                                            style="background-color: #F3F3FF"><small>{{ date('d-F-Y', strtotime($approval->end_date)) }}</small></span>
+                                                        <div class="mb-2"><small>Human <br>
+                                                                Resources</small></div>
+                                                        <img src="{{ asset('images/icon/' . $overtimeRequest->status . '.svg') }}"
+                                                            alt="">
                                                     </div>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>{{ $approval->reason }}</td>
-                                        <td>
-                                            @if ($approval->status_supervisor == "reject")
+                                         <td>
+                                            <a class="text-center"
+                                            {{-- href="{{ route('overtime.show', $overtimeRequest->id) }}" --}}
+                                            ><img class="mx-auto" width="25px" src="{{ asset('images/icon/eye.svg') }}" alt="Lihat Detail"></a>
+                                        </td>
+                                            {{-- @if ($overtimeRequest->status == "reject")
                                                 <div>
                                                     <div class="mb-2">REJECTED <img src="{{ asset('images/icon/reject.svg') }}" alt=""></div>
                                                 </div>
-                                            @elseif($approval->status_supervisor == "approve")
+                                            @elseif($overtimeRequest->status == "approve")
                                                 <div>
                                                     <div class="mb-2">APPROVED <img src="{{ asset('images/icon/approve.svg') }}" alt=""></div>
                                                 </div>
                                             @else
                                                 <div class="d-flex justify-content-between">
-                                                    <form action="{{ route('overtime.reject', $approval->id) }}" method="POST" style="display:inline;">
+                                                    {{-- <form action="{{ route('overtime.reject', $overtimeRequest->id) }}" method="POST" style="display:inline;"> --
                                                         @csrf
                                                         <button type="submit" class="btn btn-outline-primary">Reject</button>
-                                                    </form>
-                                                    <form action="{{ route('overtime.approve', $approval->id) }}" method="POST" style="display:inline;">
+                                                    {{-- </form> --}}
+                                                    {{-- <form action="{{ route('overtime.approve', $overtimeRequest->id) }}" method="POST" style="display:inline;"> --
                                                         @csrf
                                                         <button type="submit" class="btn btn-primary">Approve</button>
-                                                    </form>
+                                                    {{-- </form> --
                                                 </div>
-                                            @endif
-                                        </td>
+                                            @endif --}}
+
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" class="text-center">Belum ada pengajuan cuti sebelumnya</td>
+                                        <td colspan="6" class="text-center">Belum ada pengajuan lembur sebelumnya</td>
                                     </tr>
-                                @endforelse --}}
+                                @endforelse
                             </tbody>
                         </table>
 
-                        {{-- {{ $list_request->links() }} --}}
+                        {{ $myRequest['transaction']->links() }}
                     </div>
                 </div>
             </div>

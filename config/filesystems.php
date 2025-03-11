@@ -38,6 +38,13 @@ return [
             'report' => false,
         ],
 
+        'supporting_documents' => [
+            'driver' => 'local',
+            'root' => storage_path('app/supporting_documents'),
+            'url' => env('APP_URL') . '/storage/supporting_documents',
+            'visibility' => 'private',
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

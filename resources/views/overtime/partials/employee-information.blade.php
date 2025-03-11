@@ -6,7 +6,8 @@
                 <td class="p-3">
                     <strong>{{ Auth::user()->name }}</strong>
                     <div class="px-2 py-1 rounded mt-3" style="background-color: #F3F3FF; color: #4343FF">NIP :
-                        {{ Auth::user()->userProfile->nip }}</div>
+                        {{ Auth::user()->userProfile->nip }}
+                    </div>
                 </td>
                 <td class="p-3">
                     <div>

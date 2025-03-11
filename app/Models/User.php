@@ -70,8 +70,13 @@ class User extends Authenticatable
         return $this->belongsTo(User::class, 'supervisor_id');
     }
 
-    public function subordinates()
+    // public function teamMembers()
+    // {
+    //     return $this->hasMany(User::class, 'supervisor_id');
+    // }
+
+    public function overtimeTransactions()
     {
-        return $this->hasMany(User::class, 'supervisor_id');
+        return $this->belongsToMany(OvertimeTransaction::class, 'overtime_transaction_user');
     }
 }
