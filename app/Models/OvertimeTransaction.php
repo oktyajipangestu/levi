@@ -9,6 +9,7 @@ class OvertimeTransaction extends Model
     protected $fillable = [
         'employee_id',
         'overtime_date',
+        'reason',
         'duration',
         'overtime_type_id',
         'status',

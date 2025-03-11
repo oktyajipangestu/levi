@@ -95,59 +95,47 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {{-- @forelse ($list_request as $request)
-                            <tr>
-                                <th><strong>{{ $request->type == 'annual' ? 'ANNUAL LEAVE' : ($request->type == 'big' ? 'BIG LEAVE' : ($request->type == 'sick' ? 'SICK LEAVE' : 'IMPORTANT LEAVE')) }}</strong>
-                                </th>
-                                <td>{{ date('d-F-Y', strtotime($request->created_at)) }}</td>
-                                <td>
-                                    <div class="d-flex justify-content-between">
-                                        <div class="d-flex">
-                                            <div>
-                                                <div class="mb-2"><small>Begin</small></div>
-                                                <span class="rounded px-2 py-1"
-                                                    style="background-color: #F3F3FF"><small>{{ date('d-F-Y', strtotime($request->start_date)) }}</small></span>
+                          @forelse ($myData['transaction'] as $request)
+                                    <tr>
+                                        <td><strong>{{ $request->overtimeType->type }}</strong>
+                                        </td>
+                                        <td>{{ date('d-F-Y', strtotime($request->created_at)) }}</td>
+                                        <td>
+
+                                            <div class="d-flex">
+                                                <div>
+                                                    <div class="mb-2"><small>Submissed By</small></div>
+                                                    <span class="rounded px-2 py-1"
+                                                        style="background-color: #F3F3FF"><small>{{ date('d-F-Y', strtotime($request->start_date)) }}</small></span>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="d-flex">
-                                            <div>
-                                                <div class="mb-2"><small>End</small></div>
-                                                <span class="rounded px-2 py-1"
-                                                    style="background-color: #F3F3FF"><small>{{ date('d-F-Y', strtotime($request->end_date)) }}</small></span>
+                                        </td>
+                                        <td>
+                                            <x-hours duration="{{ $request->duration }}" />
+                                        </td>
+                                        <td>{{ Str::limit($request->reason, 100, '...') }}</td>
+                                        <td>{{ $request->supporting_document }}</td>
+                                        <td>
+                                            <div class="d-flex justify-content-between">
+                                                <div class="d-flex text-center">
+                                                    <div>
+                                                        <div class="mb-2"><small>Human <br>
+                                                                Resources</small></div>
+                                                        <img src="{{ asset('images/icon/' . $request->status . '.svg') }}"
+                                                            alt="">
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>{{ $request->reason }}</td>
-                                <td>
-                                    <div class="d-flex justify-content-between">
-                                        <div class="d-flex text-center">
-                                            <div>
-                                                <div class="mb-2"><small>Direct <br>
-                                                        Supervisor</small></div>
-                                                <img src="{{ asset('images/icon/' . $request->status_supervisor . '.svg') }}"
-                                                    alt="">
-                                            </div>
-                                        </div>
-                                        <div class="d-flex text-center">
-                                            <div>
-                                                <div class="mb-2"><small>Human <br>
-                                                        Resources</small></div>
-                                                <img src="{{ asset('images/icon/' . $request->status_hr . '.svg') }}"
-                                                    alt="">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <a href=""><i class="bi bi-eye-fill"></i> View Detail</a>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="6" class="text-center">Belum ada pengajuan cuti sebelumnya</td>
-                            </tr>
-                        @endforelse --}}
+                                        </td>
+                                        <td>
+                                            <a class="text-center" href="{{ route('overtime.show', $request->id) }}"><img class="mx-auto" width="25px" src="{{ asset('images/icon/eye.svg') }}" alt="Lihat Detail"></a>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="8" class="text-center">Belum ada pengajuan lembur sebelumnya</td>
+                                    </tr>
+                            @endforelse
                     </tbody>
                 </table>
 
