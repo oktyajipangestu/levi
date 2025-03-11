@@ -32,7 +32,7 @@
                 <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
                     <!--begin::Menu Footer-->
                     <li class="user-footer">
-                        <a href="{{ route('profile.edit') }}" class="btn btn-light btn-flat d-block text-start mb-2">Profile</a>
+                        <a href="{{ route('profile') }}" class="btn btn-light btn-flat d-block text-start mb-2">Profile</a>
                         <form method="POST" action="{{ route('logout') }}" class="w-full">
                             @csrf
 

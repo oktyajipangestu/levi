@@ -7,13 +7,19 @@ use App\Http\Controllers\OvertimeController;
 use App\Http\Controllers\UserManagementController;
 use Illuminate\Support\Facades\Route;
 
-// Route untuk login
-Route::view('/', 'auth.login')->name('login');
+Route::get('/', function () {
+    return view('welcome');
+});
 
-// Middleware untuk user yang sudah terautentikasi
-Route::middleware(['auth', 'verified'])->group(function () {
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
-    // Dashboard
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'profile'])->name('profile');
+});
+
+Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [LeaveController::class, 'index'])->name('dashboard');
 
     // Profile

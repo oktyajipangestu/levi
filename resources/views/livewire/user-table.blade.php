@@ -42,8 +42,7 @@
         <tbody>
             @forelse ($users as $user)
                 <tr>
-                    <th><strong>{{ $user->email }}</strong>
-                    </th>
+                    <td>{{ $user->email }}</td>
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->userProfile->nip ?? '' }}</td>
                     <td>{{ $user->department }}</td>
