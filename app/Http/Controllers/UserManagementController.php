@@ -96,7 +96,7 @@ class UserManagementController extends Controller
         $user_profile->status = $request->status;
         $user->save();
 
-        return redirect()->route('users.index')->with('success', 'User and Profile created successfully!');
+        return redirect()->route('users.index')->with('success', 'User and Profile updated successfully!');
     }
 
     public function destroy(string $id) {

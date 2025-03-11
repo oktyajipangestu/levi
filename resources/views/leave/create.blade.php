@@ -132,19 +132,19 @@
                                     @if ($annual_leaves)
                                         {{ $annual_leaves->remaining }} / {{ $annual_leaves->total }}
                                     @else
-                                        0/12
+                                        12/12
                                     @endif
                                 </div>
                             </div>
                             @if ($annual_leaves)
-                                <div class="progress mt-2" role="progressbar" aria-label="Example 20px high" aria-valuenow="{{ $annual_leaves['remaining'] / 12 * 100 }}"
-                                aria-valuemin="0" aria-valuemax="12" style="height: 20px">
-                                    <div class="progress-bar" style="width: {{ $annual_leaves['remaining'] / 12 * 100 }}%"></div>
+                                <div class="progress mt-2 rounded-3" role="progressbar" aria-label="Example 20px high" aria-valuenow="{{ $annual_leaves['remaining'] / 12 * 100 }}"
+                                aria-valuemin="0" aria-valuemax="12" style="height: 15px">
+                                    <div class="progress-bar rounded-3" style="width: {{ $annual_leaves['remaining'] / 12 * 100 }}%"></div>
                                 </div>
                             @else
-                                <div class="progress mt-2" role="progressbar" aria-label="Example 20px high" aria-valuenow="0"
-                                    aria-valuemin="0" aria-valuemax="12" style="height: 20px">
-                                    <div class="progress-bar" style="width: 0%"></div>
+                                <div class="progress mt-2 rounded-3" role="progressbar" aria-label="Example 20px high" aria-valuenow="0"
+                                    aria-valuemin="0" aria-valuemax="12" style="height: 15px">
+                                    <div class="progress-bar rounded-3" style="width: 100%"></div>
                                 </div>
                             @endif
                         </div>
@@ -155,14 +155,16 @@
                             <div>
                                 @forelse ($list_request as $leave)
                                     <div class="row rounded-4 p-4 mb-3" style="background-color: #F7F7F7">
-                                        <div class="d-flex justify-content-between">
+                                        <div class="d-flex">
                                             <div>
-                                                Annual Leave Take <br>
-                                                {{ date('d F Y', strtotime($leave->start_date)) }} ~ {{ date('d F Y', strtotime($leave->end_date)) }}
+                                                Annual Leave Take
+                                                <hr class="my-1">
+                                                <small>start: <strong>{{ date('d F Y', strtotime($leave->start_date)) }}</strong> <br> end: <strong>{{ date('d F Y', strtotime($leave->end_date)) }}</strong></small>
                                             </div>
-                                            <div>
-                                                Reason <br>
-                                                {{ $leave->reason }}
+                                            <div class="ps-4">
+                                                Reason
+                                                <hr class="my-1">
+                                                {{ Str::limit($leave->reason, 50, '...') }}
                                             </div>
                                         </div>
                                     </div>
