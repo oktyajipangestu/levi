@@ -37,12 +37,17 @@ Route::middleware(['auth'])->group(function () {
 
     // Overtime (Lembur)
     Route::prefix('overtime')->name('overtime.')->group(function () {
+        Route::post('/approve/{id}', [OvertimeController::class, 'approve'])->name('approve');
+        Route::post('/reject/{id}', [OvertimeController::class, 'reject'])->name('reject');
+
         Route::get('/history', [OvertimeController::class, 'history'])->name('history');
         Route::get('/create', [OvertimeController::class, 'create'])->name('create');
         Route::post('/', [OvertimeController::class, 'store'])->name('store');
         Route::get('/approval', [OvertimeController::class, 'indexApproval'])->name('approval');
         Route::patch('/{id}/status', [OvertimeController::class, 'updateStatus'])->name('updateStatus');
         Route::get('/download/{filename}', [OvertimeController::class, 'download'])->name('download');
+        Route::get('/show/{id}', [OvertimeController::class, 'show'])->name('show');
+
     });
 
 });
