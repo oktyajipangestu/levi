@@ -22,6 +22,11 @@ class OvertimeTransaction extends Model
         return $this->belongsToMany(User::class, 'overtime_transaction_user');
     }
 
+     public function supervisor()
+    {
+        return $this->belongsTo(User::class, 'employee_id','id');
+    }
+
     public function overtimeType()
     {
         return $this->belongsTo(OvertimeType::class);

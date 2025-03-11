@@ -125,11 +125,11 @@ class OvertimeController extends Controller
         $userId = $user->id;
         $overtimeTransactions = OvertimeTransaction::whereHas('users', function ($query) use ($userId) {
             $query->where('user_id', $userId);
-        })->with('overtimeType')->paginate(10);
+        })->with('overtimeType')->with('supervisor')->paginate(10);
 
         $rejectedCount = OvertimeTransaction::whereHas('users', function ($query) use ($userId) {
             $query->where('user_id', $userId);
-        })->where('status','reject')->count();
+        })->where('status','rejected')->count();
 
         $pendingCount = OvertimeTransaction::whereHas('users', function ($query) use ($userId) {
             $query->where('user_id', $userId);
@@ -137,7 +137,7 @@ class OvertimeController extends Controller
 
         $approvedCount = OvertimeTransaction::whereHas('users', function ($query) use ($userId) {
             $query->where('user_id', $userId);
-        })->where('status', 'approve')->count();
+        })->where('status', 'approved')->count();
 
         $myData = [
             'transaction' => $overtimeTransactions,
@@ -150,11 +150,11 @@ class OvertimeController extends Controller
 
             $requestTransaction = OvertimeTransaction::where('employee_id',$userId)->with('userProfile')->with('users')->latest()->paginate(10);
 
-            $requestRejectedCount = OvertimeTransaction::where('employee_id', $userId)->where('status', 'reject')->count();
+            $requestRejectedCount = OvertimeTransaction::where('employee_id', $userId)->where('status', 'rejected')->count();
 
             $requestPendingCount = OvertimeTransaction::where('employee_id', $userId)->where('status', 'pending')->count();
 
-            $requestApprovedCount = OvertimeTransaction::where('employee_id', $userId)->where('status', 'approve')->count();
+            $requestApprovedCount = OvertimeTransaction::where('employee_id', $userId)->where('status', 'approved')->count();
 
             $myRequest = [
                 'transaction' => $requestTransaction,
@@ -163,14 +163,32 @@ class OvertimeController extends Controller
                 'approvedCount' => $requestApprovedCount
             ];
         }
+        $hrRequest = [];
+        if ($user->role == "hr") {
+
+            $hrTransaction = OvertimeTransaction::with('userProfile')->with('users')->latest()->paginate(10);
+
+            $hrRejectedCount = OvertimeTransaction::where('status', 'rejected')->count();
+
+            $hrPendingCount = OvertimeTransaction::where('status', 'pending')->count();
+
+            $hrApprovedCount = OvertimeTransaction::where('status', 'approved')->count();
+
+            $hrRequest = [
+                'transaction' => $hrTransaction,
+                'rejectedCount' => $hrRejectedCount,
+                'pendingCount' => $hrPendingCount,
+                'approvedCount' => $hrApprovedCount
+            ];
+        }
 
         // Menampilkan view persetujuan lembur dengan data pengajuan lembur
-        return view('overtime.history', compact('myData','myRequest'));
+        return view('overtime.history', compact('myData','myRequest','hrRequest'));
     }
 
     public function download($filename)
     {
-        $path = storage_path('app/public/'. $filename);
+        $path = storage_path('app/supporting_documents/'. $filename);
 
         if (!File::exists($path)) {
             abort(404, 'File not found');
@@ -184,6 +202,47 @@ class OvertimeController extends Controller
         return response()->download($path, $filename, $headers);
     }
 
+    public function approve($id)
+    {
+        $overtimeRequest = OvertimeTransaction::findOrFail($id);
+        if ($overtimeRequest) {
+            if (Auth::user()->role == 'hr') {
+                $overtimeRequest->status = 'approved';
+            }
+
+            $overtimeRequest->save();
+            return redirect()->back()->with('success', 'Overtime request approved successfully.');
+        }
+        return redirect()->back()->with('error', 'Overtime request not found.');
+    }
+
+    public function reject($id)
+    {
+        $overtimeRequest = OvertimeTransaction::findOrFail($id);
+        if ($overtimeRequest) {
+            if (Auth::user()->role == 'hr') {
+                $overtimeRequest->status = 'rejected';
+            }
+            $overtimeRequest->save();
+            return redirect()->back()->with('success', 'Overtime request rejected successfully.');
+        }
+        return redirect()->back()->with('error', 'Overtime request not found.');
+    }
+
+    public function show(string $id)
+    {
+        $userId = Auth::user()->id;
+
+        $transaction = OvertimeTransaction::whereHas('users', function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })->with('overtimeType')->with('users')->findOrFail($id);
+
+        // dd($transaction);
+
+        return view('overtime.show', compact('transaction'));
+
+        return "Show";
+    }
 
 
 
