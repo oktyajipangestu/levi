@@ -85,7 +85,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="reason" class="form-label">Reason for Overtime</label>
-                            <textarea name="reason" class="form-control" id="reason" rows="3">{{ old('reason') }}</textarea>
+                            <textarea name="reason" class="form-control" id="reason" rows="3"></textarea>
                             @error('reason')
                                 <div id="validationType" class="invalid-feedback">
                                     {{ $message }}

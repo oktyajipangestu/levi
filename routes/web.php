@@ -37,6 +37,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/', [OvertimeController::class, 'store'])->name('store');
         Route::get('/approval', [OvertimeController::class, 'indexApproval'])->name('approval');
         Route::patch('/{id}/status', [OvertimeController::class, 'updateStatus'])->name('updateStatus');
+        Route::get('/download/{filename}', [OvertimeController::class, 'download'])->name('download');
     });
 
 });

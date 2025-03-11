@@ -385,7 +385,7 @@
                                     <tr>
                                         <td><strong>{{ $overtimeRequest->overtimeType->type }}</strong></td>
                                         <td>{{ date('d-F-Y', strtotime($overtimeRequest->created_at)) }}</td>
-                                        <td>
+
                                         {{-- <td>
                                             <div>
                                                 <div>
@@ -400,33 +400,48 @@
                                             </div>
                                         </td> --}}
                                         <td>
+                                            {{-- {{ dd($overtimeRequest->users) }} --}}
+                                            <small>Submissed by</small>
+                                            <div class="mb-2"><b>{{ $overtimeRequest->userProfile->user->name }}</b></div>
+                                            <x-hours duration="{{ $overtimeRequest->userProfile->position }}" class="mb-2   "/>
+
+                                            <small>Team Member</small>
+                                            @foreach ( $overtimeRequest->users as $member )
+                                                <li><b>{{ $member->name }}</b></li>
+                                            @endforeach
+
+
+                                        </td>
+                                        <td>
                                             <div>
                                                 <div class="mb-2"><small>{{ date('d-F-Y', strtotime($overtimeRequest->overtime_date)) }} </small>
                                                 </div>
                                                 <x-hours duration="{{ $overtimeRequest->duration }}"/>
                                             </div>
                                         </td>
+
+                                        <td>{{ Str::limit($overtimeRequest->reason, 100, '...') }}</td>
+                                        <td><a class="text-center btn btn-primary -ml-px" target="_blank"
+                                            href="{{ route('overtime.download', ['filename' => $overtimeRequest->supporting_document_path]) }} "
+                                            ><i class="bi bi-file-pdf"></i> Report.pdf</a></td>
                                         <td>
-                                            {{-- <div class="d-flex justify-content-between"> --}}
-                                                {{-- <div class="d-flex">
+                                            <div class="d-flex justify-content-between">
+                                                <div class="d-flex text-center">
                                                     <div>
-                                                        <div class="mb-2"><small>Begin</small></div>
-                                                        <span class="rounded px-2 py-1"
-                                                            style="background-color: #F3F3FF"><small>{{ date('d-F-Y', strtotime($overtimeRequest->start_date)) }}</small></span>
+                                                        <div class="mb-2"><small>Human <br>
+                                                                Resources</small></div>
+                                                        <img src="{{ asset('images/icon/' . $overtimeRequest->status . '.svg') }}"
+                                                            alt="">
                                                     </div>
                                                 </div>
-                                                <div class="d-flex">
-                                                    <div>
-                                                        <div class="mb-2"><small>End</small></div>
-                                                        <span class="rounded px-2 py-1"
-                                                            style="background-color: #F3F3FF"><small>{{ date('d-F-Y', strtotime($overtimeRequest->end_date)) }}</small></span>
-                                                    </div>
-                                                </div> --}}
-                                            {{-- </div> --}}
+                                            </div>
                                         </td>
-                                        <td>{{ $overtimeRequest->reason }}</td>
-                                        <td>
-                                            @if ($overtimeRequest->status == "reject")
+                                         <td>
+                                            <a class="text-center"
+                                            {{-- href="{{ route('overtime.show', $overtimeRequest->id) }}" --}}
+                                            ><img class="mx-auto" width="25px" src="{{ asset('images/icon/eye.svg') }}" alt="Lihat Detail"></a>
+                                        </td>
+                                            {{-- @if ($overtimeRequest->status == "reject")
                                                 <div>
                                                     <div class="mb-2">REJECTED <img src="{{ asset('images/icon/reject.svg') }}" alt=""></div>
                                                 </div>
@@ -436,17 +451,17 @@
                                                 </div>
                                             @else
                                                 <div class="d-flex justify-content-between">
-                                                    {{-- <form action="{{ route('overtime.reject', $overtimeRequest->id) }}" method="POST" style="display:inline;"> --}}
+                                                    {{-- <form action="{{ route('overtime.reject', $overtimeRequest->id) }}" method="POST" style="display:inline;"> --
                                                         @csrf
                                                         <button type="submit" class="btn btn-outline-primary">Reject</button>
                                                     {{-- </form> --}}
-                                                    {{-- <form action="{{ route('overtime.approve', $overtimeRequest->id) }}" method="POST" style="display:inline;"> --}}
+                                                    {{-- <form action="{{ route('overtime.approve', $overtimeRequest->id) }}" method="POST" style="display:inline;"> --
                                                         @csrf
                                                         <button type="submit" class="btn btn-primary">Approve</button>
-                                                    {{-- </form> --}}
+                                                    {{-- </form> --
                                                 </div>
-                                            @endif
-                                        </td>
+                                            @endif --}}
+
                                     </tr>
                                 @empty
                                     <tr>

@@ -31,10 +31,11 @@ class OvertimeController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
+        // dd($request->reason);
         // Validasi data yang diterima dari form
         $validatedData = $request->validate([
             'overtime_date' => 'required|date',
+            'reason' => 'required',
             'overtime_type_id' => 'required|exists:overtime_types,id',
             'selected_members' => 'required|array',
             'selected_members.*' => 'exists:users,id',
@@ -45,15 +46,14 @@ class OvertimeController extends Controller
         // Proses unggahan file
         if ($request->hasFile('supporting_document')) {
             $file = $request->file('supporting_document');
-            $filePath = $file->store('', 'supporting_documents');
+            $filePath = $file->store('','supporting_documents');
         }
 
         // Simpan data pengajuan lembur
         $overtimeRequest = OvertimeTransaction::create([
             'employee_id' => Auth::id(), //as supervisor ID
             'overtime_date' => $request->overtime_date,
-            // 'start_time' => $request->start_time,
-            // 'end_time' => $request->end_time,
+            'reason' => $request->reason,
             'duration' => $request->duration,
             'overtime_type_id' => $request->overtime_type_id,
             'status' => 'Pending',
@@ -146,7 +146,7 @@ class OvertimeController extends Controller
         $myRequest = [];
         if ($user->role == "supervisor") {
 
-            $requestTransaction = OvertimeTransaction::where('employee_id',$userId)->latest()->paginate(10);
+            $requestTransaction = OvertimeTransaction::where('employee_id',$userId)->with('userProfile')->with('users')->latest()->paginate(10);
 
             $requestRejectedCount = OvertimeTransaction::where('employee_id', $userId)->where('status', 'reject')->count();
 
@@ -165,6 +165,24 @@ class OvertimeController extends Controller
         // Menampilkan view persetujuan lembur dengan data pengajuan lembur
         return view('overtime.history', compact('myData','myRequest'));
     }
+
+    public function download($filename)
+    {
+        $path = storage_path('app/public/'. $filename);
+
+        if (!File::exists($path)) {
+            abort(404, 'File not found');
+        }
+
+        $headers = [
+            'Content-Type' => File::mimeType($path),
+            'Content-Disposition' => 'attachment; filename="'. pathinfo($path, PATHINFO_FILENAME). '.'. pathinfo($path, PATHINFO_EXTENSION). '"',
+        ];
+
+        return response()->download($path, $filename, $headers);
+    }
+
+
 
 
 }
