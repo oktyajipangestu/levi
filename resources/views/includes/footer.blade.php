@@ -1,11 +1,7 @@
 <!--begin::Footer-->
-<footer class="app-footer">
+<footer class="app-footer text-center">
     <!--begin::Copyright-->
-    <strong>
-        Copyright &copy; 2025&nbsp;
-        <a href="https://adminlte.io" class="text-decoration-none">Fatigium</a>.
-    </strong>
-    All rights reserved.
+       <small> Copyright &copy; 2025&nbsp; <strong>Fatigium</strong>All rights reserved.</small>
     <!--end::Copyright-->
 </footer>
 <!--end::Footer-->

@@ -12,60 +12,61 @@ class LeaveController extends Controller
 {
     public function index()
     {
-        $user = Auth::user();
-        $leaveRequest = LeaveRequest::where('user_id', $user->id)->latest()->paginate(10);
-        $rejectedCount = LeaveRequest::where('status_hr', 'reject')->where('user_id', $user->id)->count();
-        $pendingCount = LeaveRequest::where('status_hr', 'pending')->where('user_id', $user->id)->count();
-        $approvedCount = LeaveRequest::where('status_hr', 'approve')->where('user_id', $user->id)->count();
+        // $user = Auth::user();
+        // $leaveRequest = LeaveRequest::where('user_id', $user->id)->latest()->paginate(10);
+        // $rejectedCount = LeaveRequest::where('status_hr', 'reject')->where('user_id', $user->id)->count();
+        // $pendingCount = LeaveRequest::where('status_hr', 'pending')->where('user_id', $user->id)->count();
+        // $approvedCount = LeaveRequest::where('status_hr', 'approve')->where('user_id', $user->id)->count();
 
-        if ($user->role == "supervisor") {
-            $userId = $user->id;
-            $leaveApproval = LeaveRequest::whereHas('user', function ($query) use ($userId) {
-                $query->where('supervisor_id', $userId);
-            })->get();
+        // if ($user->role == "supervisor") {
+        //     $userId = $user->id;
+        //     $leaveApproval = LeaveRequest::whereHas('user', function ($query) use ($userId) {
+        //         $query->where('supervisor_id', $userId);
+        //     })->get();
 
-            $countByStatus = [];
-            $countByStatus['approve'] = LeaveRequest::whereHas('user', function ($query) use ($userId) {
-                $query->where('supervisor_id', $userId);
-            })->where('status_supervisor', 'approve')->count();
-            $countByStatus['reject'] = LeaveRequest::whereHas('user', function ($query) use ($userId) {
-                $query->where('supervisor_id', $userId);
-            })->where('status_supervisor', 'reject')->count();
-            $countByStatus['pending'] = LeaveRequest::whereHas('user', function ($query) use ($userId) {
-                $query->where('supervisor_id', $userId);
-            })->where('status_supervisor', 'pending')->count();
-            $view = 'leave.index';
-            $data = [
-                'list_request' => $leaveRequest,
-                'rejected' => $rejectedCount,
-                'pending' => $pendingCount,
-                'approved' => $approvedCount,
-                'list_approval' => $leaveApproval ?? [],
-                'count_approval' => $countByStatus ?? []
-            ];
-        } elseif ($user->role == "hr") {
-            $leaveRequest = LeaveRequest::where('status_supervisor', 'approve')->latest()->paginate(10);
-            $rejectedCount = LeaveRequest::where('status_hr', 'reject')->where('status_supervisor', 'approve')->count();
-            $pendingCount = LeaveRequest::where('status_hr', 'pending')->where('status_supervisor', 'approve')->count();
-            $approvedCount = LeaveRequest::where('status_hr', 'approve')->where('status_supervisor', 'approve')->count();
-            $view = 'leave.hr.index';
-            $data = [
-                'list_request' => $leaveRequest,
-                'rejected' => $rejectedCount,
-                'pending' => $pendingCount,
-                'approved' => $approvedCount
-            ];
-        } else {
-            $view = 'leave.index';
-            $data = [
-                'list_request' => $leaveRequest,
-                'rejected' => $rejectedCount,
-                'pending' => $pendingCount,
-                'approved' => $approvedCount
-            ];
-        }
+        //     $countByStatus = [];
+        //     $countByStatus['approve'] = LeaveRequest::whereHas('user', function ($query) use ($userId) {
+        //         $query->where('supervisor_id', $userId);
+        //     })->where('status_supervisor', 'approve')->count();
+        //     $countByStatus['reject'] = LeaveRequest::whereHas('user', function ($query) use ($userId) {
+        //         $query->where('supervisor_id', $userId);
+        //     })->where('status_supervisor', 'reject')->count();
+        //     $countByStatus['pending'] = LeaveRequest::whereHas('user', function ($query) use ($userId) {
+        //         $query->where('supervisor_id', $userId);
+        //     })->where('status_supervisor', 'pending')->count();
+        //     $view = 'leave.index';
+        //     $data = [
+        //         'list_request' => $leaveRequest,
+        //         'rejected' => $rejectedCount,
+        //         'pending' => $pendingCount,
+        //         'approved' => $approvedCount,
+        //         'list_approval' => $leaveApproval ?? [],
+        //         'count_approval' => $countByStatus ?? []
+        //     ];
+        // } elseif ($user->role == "hr") {
+        //     $leaveRequest = LeaveRequest::where('status_supervisor', 'approve')->latest()->paginate(10);
+        //     $rejectedCount = LeaveRequest::where('status_hr', 'reject')->where('status_supervisor', 'approve')->count();
+        //     $pendingCount = LeaveRequest::where('status_hr', 'pending')->where('status_supervisor', 'approve')->count();
+        //     $approvedCount = LeaveRequest::where('status_hr', 'approve')->where('status_supervisor', 'approve')->count();
+        //     $view = 'leave.hr.index';
+        //     $data = [
+        //         'list_request' => $leaveRequest,
+        //         'rejected' => $rejectedCount,
+        //         'pending' => $pendingCount,
+        //         'approved' => $approvedCount
+        //     ];
+        // } else {
+        //     $view = 'leave.index';
+        //     $data = [
+        //         'list_request' => $leaveRequest,
+        //         'rejected' => $rejectedCount,
+        //         'pending' => $pendingCount,
+        //         'approved' => $approvedCount
+        //     ];
+        // }
 
-        return view($view, $data);
+        // return view($view, $data);
+        return view('leave.index');
 
     }
 
