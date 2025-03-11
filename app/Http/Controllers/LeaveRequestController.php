@@ -74,6 +74,8 @@ class LeaveRequestController extends Controller
             'annual_leaves' => $annualLeaves,
             'list_request' => $list_request
         ]);
+
+        return "Show";
     }
 
     /**

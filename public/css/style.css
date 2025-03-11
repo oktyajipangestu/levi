@@ -5010,7 +5010,7 @@ textarea.form-control-lg {
   color: var(--bs-progress-bar-color);
   text-align: center;
   white-space: nowrap;
-  background-color: var(--bs-progress-bar-bg);
+  background-color: #0000FE;
   transition: var(--bs-progress-bar-transition);
 }
 @media (prefers-reduced-motion: reduce) {
@@ -14711,7 +14711,7 @@ html.maximized-card {
   background-color: rgba(var(--lte-card-variant-color-rgb), 0.125);
 }
 .info-box .progress .progress-bar {
-  background-color: var(--lte-card-variant-color);
+  background-color: #0000FE;
 }
 .info-box .info-box-icon {
   display: flex;

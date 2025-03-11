@@ -459,7 +459,7 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <th><strong>{{ $approval->type == 'annual' ? 'ANNUAL LEAVE' : ($approval->type == 'big' ? 'BIG LEAVE' : ($approval->type == 'sick' ? 'SICK LEAVE' : 'IMPORTANT LEAVE')) }}</strong>
+                                    <th>{{ $approval->type == 'annual' ? 'ANNUAL LEAVE' : ($approval->type == 'big' ? 'BIG LEAVE' : ($approval->type == 'sick' ? 'SICK LEAVE' : 'IMPORTANT LEAVE')) }}
                                     </th>
                                     <td>{{ date('d-F-Y', strtotime($approval->created_at)) }}</td>
                                     <td>
