@@ -585,9 +585,9 @@
                                             </div>
                                         </td>
                                          <td>
-                                            <a class="text-center"
-                                            {{-- href="{{ route('overtime.show', $overtimeRequest->id) }}" --}}
-                                            ><img class="mx-auto" width="25px" src="{{ asset('images/icon/eye.svg') }}" alt="View Detail"></a>
+                                            <a class="text-center link-underline-light"
+                                            href="{{ route('overtime.show', $overtimeRequest->id) }}"
+                                            ><img class="mx-auto"  src="{{ asset('images/icon/eye.svg') }}" alt="View Detail"> View Detail</a>
                                         </td>
                                             {{-- @if ($overtimeRequest->status == "reject")
                                                 <div>

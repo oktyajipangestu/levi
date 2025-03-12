@@ -231,12 +231,14 @@ class OvertimeController extends Controller
 
     public function show(string $id)
     {
-        $userId = Auth::user()->id;
 
-        $transaction = OvertimeTransaction::whereHas('users', function ($query) use ($userId) {
-            $query->where('user_id', $userId);
-        })->with('overtimeType')->with('users')->findOrFail($id);
+        // $userId = Auth::user()->id;
 
+        // $transaction = OvertimeTransaction::whereHas('users', function ($query) use ($id) {
+        //     $query->where('user_id', $id);
+        // })->with('overtimeType')->with('users')->findOrFail($id);
+
+        $transaction = OvertimeTransaction::with('overtimeType')->with('users')->find($id);
         // dd($transaction);
 
         return view('overtime.show', compact('transaction'));
