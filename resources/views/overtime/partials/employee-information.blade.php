@@ -1,6 +1,6 @@
-<div class="employee-information px-5 py-4 msb-3">
+<div class="employee-information px-3 px-md-5 py-4 msb-3">
     <h4 class="fw-bold" style="color: #4343FF">Employee Information</h4>
-    <div>
+    <div class="table-responsive">
         <table class="table-bordered w-100">
             <tr>
                 <td class="p-3">

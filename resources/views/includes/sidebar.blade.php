@@ -1,11 +1,11 @@
 <!--begin::Sidebar-->
-<aside class="app-sidebar bg-body-white shadow">
+<aside class="app-sidebar bg-white shadow">
     <!--begin::Sidebar Brand-->
     <div class="sidebar-brand py-3">
         <!--begin::Brand Link-->
-        <a href="../index.html" class="brand-link">
+        <a href="/" class="brand-link">
             <!--begin::Brand Image-->
-            <img src="{{ asset('images/logo.png') }}" alt="AdminLTE Logo" class="brand-image opacity-75" />
+            <img src="{{ asset('images/logo.png') }}" alt="Logo BPKP" class="brand-image opacity-75" />
             <!--end::Brand Image-->
             <!--begin::Brand Text-->
             <h2 class="brand-text fw-bold my-0">LEVI</h2>

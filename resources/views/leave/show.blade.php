@@ -13,16 +13,16 @@
                     </ul>
                 </div>
             @endif
-            <div class="timeoff-header mb-4 d-flex justify-content-between px-5 py-4">
+            <div class="timeoff-header mb-4 d-flex justify-content-between px-3 px-md-5 py-4">
                 <h2 class="fw-bold">Leave & Time Off Request Form</h2>
                 <div>
                     <a class="btn btn-outline-primary" href="{{ route('dashboard') }}">Kembali</a>
                 </div>
             </div>
             <hr>
-            <div class="employee-information px-5 py-4 mb-3">
+            <div class="employee-information px-3 px-md-5 py-4 mb-3">
                 <h4 class="fw-bold" style="color: #4343FF">Employee Information</h4>
-                <div>
+                <div class="table-responsive">
                     <table class="table-bordered w-100">
                         <tr>
                             <td class="p-3">
@@ -68,8 +68,8 @@
             </div>
             <hr class="m-0">
             <div>
-                <div class="row px-5">
-                    <div class="col px-5 py-4" style="border-right: #D8DCE0 solid 1px">
+                <div class="row px-3 px-md-5">
+                    <div class="col px-3 px-md-5 py-4" style="border-right: #D8DCE0 solid 1px">
                         <h4 class="fw-bold" style="color: #4343FF">Detail Leave & Time Off</h4>
                         <div class="mb-3">
                             <label for="type" class="form-label">Types of Leave</label>
@@ -121,7 +121,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col px-5 py-4">
+                    <div class="col px-3 px-md-5 py-4">
                         <div>
                             <div class="d-flex justify-content-between">
                                 <div>
@@ -154,11 +154,11 @@
                             <div>
                                 @forelse ($list_request as $leave)
                                     <div class="row rounded-4 p-4 mb-3" style="background-color: #F7F7F7">
-                                        <div class="d-flex">
+                                        <div class="d-block d-md-flex">
                                             <div>
                                                 Annual Leave Take
                                                 <hr class="my-1">
-                                                <small>start: <strong>{{ date('d F Y', strtotime($leave->start_date)) }}</strong> <br> end: <strong>{{ date('d F Y', strtotime($leave->end_date)) }}</strong></small>
+                                                <small>start: <br><strong>{{ date('d F Y', strtotime($leave->start_date)) }}</strong> <br> end: <br><strong>{{ date('d F Y', strtotime($leave->end_date)) }}</strong></small>
                                             </div>
                                             <div class="ps-4">
                                                 Reason

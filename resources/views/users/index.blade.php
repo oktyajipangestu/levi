@@ -15,8 +15,8 @@
             </div>
         </div>
     @endsession
-    <div class="m-3 p-4 bg-white">
-        <div class="timeoff-header d-flex justify-content-between mb-2 py-2">
+    <div class="m-3 p-3 p-md-5 bg-white">
+        <div class="timeoff-header d-block d-md-flex justify-content-between mb-2 py-2">
             <div>
                 <h2 class="fw-bold">User Management</h2>
                 <p>List of active user of this application</p>
@@ -26,13 +26,13 @@
             </div>
         </div>
         <div class="counting">
-            <div class="d-flex align-items-center mb-3">
-                <div class="d-flex align-items-center rounded-3 px-3 py-2 me-3" style="background-color: #F5F7FF"><span
+            <div class="d-md-flex d-block align-items-center mb-3">
+                <div class="d-flex align-items-center rounded-3 px-3 py-2 me-3 mb-2 mb-md-0" style="background-color: #F5F7FF"><span
                         class="me-3"
                         style="font-weight: 700;color: #0000FE; font-size: 1.5em;">{{ $users }}</span>Total User
                 </div>
                 @foreach ($list_role as $role)
-                    <div class="d-flex align-items-center rounded-3 px-3 py-2 me-3" style="background-color: #F5F7FF"><span
+                    <div class="d-flex align-items-center rounded-3 px-3 py-2 me-3 mb-2 mb-md-0" style="background-color: #F5F7FF"><span
                             class="me-3"
                             style="font-weight: 700;color: #0000FE; font-size: 1.5em;">{{ $role->total }}</span>{{ $role->role == 'hr' ? 'Human Resources' : ($role->role == 'supervisor' ? 'Supervisor' : 'Staff') }}
                     </div>

@@ -13,7 +13,7 @@
                     </ul>
                 </div>
             @endif
-            <div class="timeoff-header mb-4 d-flex justify-content-between px-5 py-4">
+            <div class="timeoff-header mb-4 d-block d-md-flex justify-content-between px-3 px-md-5 py-4">
                 <h2 class="fw-bold">Overtime Request Form</h2>
                 <div>
                     <a class="btn btn-outline-primary" href="{{ route('overtime.history') }}">Cancel</a>
@@ -24,8 +24,8 @@
             @include('overtime.partials.employee-information')
             <hr class="m-0">
             <div>
-                <div class="row px-5">
-                    <div class="col px-5 py-4" style="border-right: #D8DCE0 solid 1px">
+                <div class="row px-3 px-md-5">
+                    <div class="col px-3 px-md-5 py-4" style="border-right: #D8DCE0 solid 1px">
                         <h4 class="fw-bold" style="color: #4343FF">Detail Overtime</h4>
                         <div class="mb-3">
                             <x-alert message="Maximum overtime per day is 8 hours." icon="bi bi-info-circle-fill text-primary me-2" />
@@ -93,7 +93,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col px-5 py-4">
+                    <div class="col px-3 px-md-5 py-4">
                         <div class="my-3">
                             <div>
                                 <h4 class="fw-bold" style="color: #4343FF">ATTACHMENT</h4>

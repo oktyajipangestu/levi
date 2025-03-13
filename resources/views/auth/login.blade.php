@@ -1,10 +1,20 @@
 <x-guest-layout>
     <div class="flex w-full h-screen">
          <p class="text-white text-xl absolute top-16 left-16 font-light"><strong><em>Assure your confidence</em></strong></p>
-        <div class="fixed left-0 bottom-8 ">
-            <img class="opacity-40 w-full" src="{{ asset('images/image-login-min.png') }}" alt="" srcset="">
+        <div class="fixed left-0 bottom-8">
+            <img class="hidden md:block opacity-40 w-4/5 z-0" src="{{ asset('images/image-login-min.png') }}" alt="" srcset="">
         </div>
-        <div class="w-2/3 grid-rows-2 bg-primary p-10">
+        <div class="fixed md:hidden left-0 top-0 bg-primary w-full z-10">
+            <div class="row text-white text-center py-3">
+                <h1 class="text-2xl font-bold">LEVI</h2>
+            </div>
+        </div>
+        <div class="fixed md:hidden left-0 bottom-0 bg-primary w-full">
+            <div class="row text-white text-center py-2">
+                <marquee><small><em>Leave and Overtime Input</em></small></marquee>
+            </div>
+        </div>
+        <div class="hidden md:block w-2/3 grid-rows-2 bg-primary p-10">
             <div class="row py-20"></div>
             <div class="row py-20 ps-40 text-white">
                 <h1 class="text-5xl font-extrabold"><em>LEVI</em></h2>
@@ -12,7 +22,7 @@
             </div>
         </div>
         <div class="w-full flex items-center justify-center">
-            <div class="flex flex-col justify-start w-1/2">
+            <div class="flex flex-col justify-start w-2/3 md:w-1/2">
                 <img class="w-28 my-12" src="{{ asset('images/logo.png') }}" alt="">
                 <p class="font-bold text-xl mb-2">Welcome Back!</p>
                 <h3 class="font-bold text-3xl">Please Login.</h3>
