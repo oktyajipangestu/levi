@@ -47,7 +47,7 @@
                             <td class="p-3">
                                 <div>
                                     <small>Direct Supervisor</small><br>
-                                    Alexandra
+                                    {{ $spv->name ?? '-' }}
                                 </div>
                             </td>
                             <td class="p-3">
@@ -116,7 +116,7 @@
                             <textarea name="reason" class="form-control" id="reason" rows="3" disabled>{{ $request->reason }}</textarea>
                             @error('reason')
                                 <div id="validationType" class="invalid-feedback">
-                                    {{ $message }} tes
+                                    {{ $message }}
                                 </div>
                             @enderror
                         </div>

@@ -92,6 +92,8 @@
     </script>
     <!--end::OverlayScrollbars Configure-->
     <!--end::Script-->
+    <script src="{{ asset('script/jquery-3.7.1.min.js') }}"></script>
+    @stack('additional-script')
 </body>
 <!--end::Body-->
 

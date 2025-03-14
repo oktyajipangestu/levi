@@ -35,7 +35,7 @@
                         <td class="p-3">
                             <div>
                                 <small>Direct Supervisor</small><br>
-                                Alexandra
+                                {{ $spv->name ?? '-' }}
                             </div>
                         </td>
                         <td class="p-3">

@@ -58,7 +58,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="text-center">Belum ada pengajuan cuti sebelumnya</td>
+                        <td colspan="6" class="text-center">User tidak ditemukan</td>
                     </tr>
                 @endforelse
             </tbody>

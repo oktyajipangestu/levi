@@ -86,6 +86,9 @@ class UserManagementController extends Controller
         $user->supervisor_id = $request->supervisor_id;
         $user->department = $request->department;
         $user->role = $request->role;
+        if ($request->password) {
+            $user->password = Hash::make($request->password);
+        }
         $user->save();
 
         $user_profile = UserProfile::where('user_id', $id)->first();

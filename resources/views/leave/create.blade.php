@@ -48,7 +48,7 @@
                             <td class="p-3">
                                 <div>
                                     <small>Direct Supervisor</small><br>
-                                    Alexandra
+                                    {{ $spv->name ?? '-' }}
                                 </div>
                             </td>
                             <td class="p-3">
@@ -80,9 +80,7 @@
                                 <option value="sick">Sick Leave</option>
                             </select>
                             @error('type')
-                                <div id="validationType" class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
+                                <div class="text-danger mt-2">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="mb-3">
@@ -91,23 +89,19 @@
                                 <div class="col">
                                     <label class="" for="begin"><small>Begin</small></label>
                                     <div class="input-group">
-                                        <input name="start_date" type="date" class="form-control" id="begin" placeholder="Start Date" value="{{ old('start_date') }}">
+                                        <input name="start_date" type="date" class="form-control" id="startDate" placeholder="Start Date" value="{{ old('start_date') }}">
                                     </div>
                                     @error('start_date')
-                                        <div id="validationType" class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
+                                        <div class="text-danger mt-2">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="col">
-                                    <label class="" for="begin"><small>End</small></label>
+                                    <label class="" for="endDate"><small>End</small></label>
                                     <div class="input-group">
-                                        <input name="end_date" type="date" class="form-control" id="begin" placeholder="End Date" value="{{ old('end_date') }}">
+                                        <input name="end_date" type="date" class="form-control" id="endDate" placeholder="End Date" value="{{ old('end_date') }}">
                                     </div>
                                     @error('end_date')
-                                        <div id="validationType" class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
+                                        <div class="text-danger mt-2">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
@@ -116,9 +110,7 @@
                             <label for="reason" class="form-label">Reason for Leave & Time Off</label>
                             <textarea name="reason" class="form-control" id="reason" rows="3">{{ old('reason') }}</textarea>
                             @error('reason')
-                                <div id="validationType" class="invalid-feedback">
-                                    {{ $message }} tes
-                                </div>
+                                <div class="text-danger mt-2">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>
