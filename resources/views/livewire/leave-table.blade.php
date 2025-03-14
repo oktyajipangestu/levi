@@ -77,6 +77,7 @@
                         <option value="annual">Annual</option>
                         <option value="big">Big</option>
                         <option value="sick">Sick</option>
+                        <option value="important">Other</option>
                     </select>
                 </div>
                 <div class="col">
@@ -118,7 +119,7 @@
                 <tbody>
                     @forelse ($list_request as $request)
                         <tr>
-                            <th>{{ $request->type == 'annual' ? 'ANNUAL LEAVE' : ($request->type == 'big' ? 'BIG LEAVE' : ($request->type == 'sick' ? 'SICK LEAVE' : 'IMPORTANT LEAVE')) }}
+                            <th>{{ $request->type == 'annual' ? 'ANNUAL LEAVE' : ($request->type == 'big' ? 'BIG LEAVE' : ($request->type == 'sick' ? 'SICK LEAVE' : 'OTHER LEAVE')) }}
                             </th>
                             <td>{{ date('d-F-Y', strtotime($request->created_at)) }}</td>
                             <td>
@@ -178,18 +179,18 @@
         <div>
             <nav>
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                    <button class="nav-link active" id="nav-history-tab" data-bs-toggle="tab"
+                    <button class="nav-link {{ $activeTab === 'history' ? 'active' : '' }}" id="nav-history-tab" data-bs-toggle="tab"
                         data-bs-target="#nav-history" type="button" role="tab" aria-controls="nav-history"
-                        aria-selected="true">My History</button>
-                    <button class="nav-link" id="nav-approval-tab" data-bs-toggle="tab" data-bs-target="#nav-approval"
-                        type="button" role="tab" aria-controls="nav-approval" aria-selected="false">Leave & Time
+                        aria-selected="true" wire:click.prevent="setActiveTab('history')">My History</button>
+                    <button class="nav-link {{ $activeTab === 'approval' ? 'active' : '' }}" id="nav-approval-tab" data-bs-toggle="tab" data-bs-target="#nav-approval"
+                        type="button" role="tab" aria-controls="nav-approval" aria-selected="false" wire:click.prevent="setActiveTab('approval')">Leave & Time
                         Off Approval </button>
                 </div>
             </nav>
             {{-- TAB CONTENT --}}
             <div class="tab-content" id="nav-tabContent">
                 {{-- MY HISTORY --}}
-                <div class="tab-pane fade show active" id="nav-history" role="tabpanel" aria-labelledby="nav-history-tab" tabindex="0">
+                <div class="tab-pane fade {{ $activeTab === 'history' ? 'show active' : '' }}" id="nav-history" role="tabpanel" aria-labelledby="nav-history-tab" tabindex="0">
                     <div class="filter d-block d-md-flex justify-content-between my-4">
                         <div class="mb-3 mb-md-0">
                             <span class="fw-bold fs-4 me-4">Leave & Time Off History</span>
@@ -264,6 +265,7 @@
                                     <option value="annual">Annual</option>
                                     <option value="big">Big</option>
                                     <option value="sick">Sick</option>
+                                    <option value="important">Other</option>
                                 </select>
                             </div>
                             <div class="col">
@@ -296,7 +298,7 @@
                             <tbody>
                                 @forelse ($list_request as $request)
                                     <tr>
-                                        <th>{{ $request->type == 'annual' ? 'ANNUAL LEAVE' : ($request->type == 'big' ? 'BIG LEAVE' : ($request->type == 'sick' ? 'SICK LEAVE' : 'IMPORTANT LEAVE')) }}
+                                        <th>{{ $request->type == 'annual' ? 'ANNUAL LEAVE' : ($request->type == 'big' ? 'BIG LEAVE' : ($request->type == 'sick' ? 'SICK LEAVE' : 'OTHER LEAVE')) }}
                                         </th>
                                         <td>{{ date('d-F-Y', strtotime($request->created_at)) }}</td>
                                         <td>
@@ -346,7 +348,7 @@
                     {{ $list_request->links() }}
                 </div>
                 {{-- APPROVAL --}}
-                <div class="tab-pane fade" id="nav-approval" role="tabpanel" aria-labelledby="nav-approval-tab" tabindex="0">
+                <div class="tab-pane fade {{ $activeTab === 'approval' ? 'show active' : '' }}" id="nav-approval" role="tabpanel" aria-labelledby="nav-approval-tab" tabindex="0">
                     <div class="filter d-flex justify-content-between my-4">
                         <div>
                             <span class="fw-bold fs-4 me-4">Leave & Time Off Approval</span>
@@ -417,6 +419,7 @@
                                     <option value="annual">Annual</option>
                                     <option value="big">Big</option>
                                     <option value="sick">Sick</option>
+                                    <option value="important">Other</option>
                                 </select>
                             </div>
                             <div class="col">
@@ -462,7 +465,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <th>{{ $approval->type == 'annual' ? 'ANNUAL LEAVE' : ($approval->type == 'big' ? 'BIG LEAVE' : ($approval->type == 'sick' ? 'SICK LEAVE' : 'IMPORTANT LEAVE')) }}
+                                        <th>{{ $approval->type == 'annual' ? 'ANNUAL LEAVE' : ($approval->type == 'big' ? 'BIG LEAVE' : ($approval->type == 'sick' ? 'SICK LEAVE' : 'OTHER LEAVE')) }}
                                         </th>
                                         <td>{{ date('d-F-Y', strtotime($approval->created_at)) }}</td>
                                         <td>
@@ -495,14 +498,8 @@
                                                 </div>
                                             @else
                                                 <div class="d-flex justify-content-between">
-                                                    <form action="{{ route('leave.reject', $approval->id) }}" method="POST" style="display:inline;">
-                                                        @csrf
-                                                        <button type="submit" class="btn btn-outline-primary">Reject</button>
-                                                    </form>
-                                                    <form action="{{ route('leave.approve', $approval->id) }}" method="POST" style="display:inline;">
-                                                        @csrf
-                                                        <button type="submit" class="btn btn-primary">Approve</button>
-                                                    </form>
+                                                    <button class="btn btn-outline-primary" wire:click.prevent="reject('{{ $approval->id }}')">Reject</button>
+                                                    <button class="btn btn-primary" wire:click.prevent="approve('{{ $approval->id }}')">Approve</button>
                                                 </div>
                                             @endif
                                         </td>

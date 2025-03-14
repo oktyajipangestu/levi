@@ -28,8 +28,8 @@
                         <tr>
                             <td class="p-3">
                                 <strong>{{ Auth::user()->name }}</strong>
-                                <div class="px-2 py-1 rounded mt-3" style="background-color: #F3F3FF; color: #4343FF">NIP :
-                                    {{ Auth::user()->userProfile->nip }}</div>
+                                <div class="mt-3"><span class="px-2 py-1 rounded" style="background-color: #F3F3FF; color: #4343FF">NIP :
+                                    {{ Auth::user()->userProfile->nip }}</span></div>
                             </td>
                             <td class="p-3">
                                 <div>
@@ -78,9 +78,10 @@
                                 <option value="annual">Annual Leave</option>
                                 <option value="big">Big Leave</option>
                                 <option value="sick">Sick Leave</option>
+                                <option value="important">Other Leave</option>
                             </select>
                             @error('type')
-                                <div class="text-danger mt-2">{{ $message }}</div>
+                                <div class="text-danger mt-2"><small>{{ $message }}</small></div>
                             @enderror
                         </div>
                         <div class="mb-3">
@@ -92,7 +93,7 @@
                                         <input name="start_date" type="date" class="form-control" id="startDate" placeholder="Start Date" value="{{ old('start_date') }}">
                                     </div>
                                     @error('start_date')
-                                        <div class="text-danger mt-2">{{ $message }}</div>
+                                        <div class="text-danger mt-2"><small>{{ $message }}</small></div>
                                     @enderror
                                 </div>
                                 <div class="col">
@@ -101,7 +102,7 @@
                                         <input name="end_date" type="date" class="form-control" id="endDate" placeholder="End Date" value="{{ old('end_date') }}">
                                     </div>
                                     @error('end_date')
-                                        <div class="text-danger mt-2">{{ $message }}</div>
+                                        <div class="text-danger mt-2"><small>{{ $message }}</small></div>
                                     @enderror
                                 </div>
                             </div>
@@ -110,7 +111,7 @@
                             <label for="reason" class="form-label">Reason for Leave & Time Off</label>
                             <textarea name="reason" class="form-control" id="reason" rows="3">{{ old('reason') }}</textarea>
                             @error('reason')
-                                <div class="text-danger mt-2">{{ $message }}</div>
+                                <div class="text-danger mt-2"><small>{{ $message }}</small></div>
                             @enderror
                         </div>
                     </div>

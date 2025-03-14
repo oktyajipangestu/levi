@@ -25,7 +25,6 @@ class UserUpdateRequest extends FormRequest
         return [
             'name' => 'required',
             'email' => 'required|email:rfc,strict',
-            'password' => 'min:8',
             'nip' => 'required|numeric',
             'department' => 'required',
             'role' => 'required|in:employee,supervisor,hr',

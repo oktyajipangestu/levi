@@ -38,7 +38,7 @@
                 <label for="password" class="form-label">Password Baru</label>
                 <input type="text" class="form-control" id="password" placeholder="password" name="password"
                     value="{{ old('password') }}">
-                <small>Jangan diisi jika tidak ingin mengubah password. Minimal 8 karakter</small>
+                <small>Jangan diisi jika tidak ingin mengubah password.</small>
             </div>
             <div class="mb-3">
                 <label for="nip" class="form-label">NIP <span class="text-danger"><small>*</small></span></label>
