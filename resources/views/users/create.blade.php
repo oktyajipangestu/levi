@@ -1,7 +1,7 @@
 @extends('layouts.dashboard')
 
 @section('content')
-    <div class="m-3 bg-white rounded-4 p-5">
+    <div class="m-3 bg-white rounded-4 p-3 p-md-5">
         <div>
             <h3>Create User</h3>
         </div>
@@ -82,6 +82,7 @@
                 </div>
             </div>
             <div>
+                <a class="btn btn-outline-primary" href="{{ route('users.index') }}">Batal</a>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </div>
         </form>

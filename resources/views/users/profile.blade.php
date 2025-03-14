@@ -1,16 +1,16 @@
 @extends('layouts.dashboard')
 
 @section('content')
-    <div class="m-3 bg-white rounded-4 p-5">
-        <div class="timeoff-header d-flex justify-content-between px-5 py-3">
+    <div class="m-3 bg-white rounded-4 p-3 p-md-5">
+        <div class="timeoff-header d-flex justify-content-between px-3 px-md-5 py-3">
             <h4 class="fw-bold" style="color: #4343FF">Employee Information</h4>
             <div>
                 <a class="btn btn-outline-primary" href="{{ route('dashboard') }}">Kembali</a>
             </div>
         </div>
         <hr>
-        <div class="employee-information px-5 py-4 mb-3">
-            <div>
+        <div class="employee-information px-3 px-md-5 py-4 mb-3">
+            <div class="table-responsive">
                 <table class="table-bordered w-100">
                     <tr>
                         <td class="p-3">
