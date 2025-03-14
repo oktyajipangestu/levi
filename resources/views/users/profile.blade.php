@@ -15,8 +15,8 @@
                     <tr>
                         <td class="p-3">
                             <strong>{{ Auth::user()->name }}</strong>
-                            <div class="px-2 py-1 rounded mt-3" style="background-color: #F3F3FF; color: #4343FF">NIP :
-                                {{ Auth::user()->userProfile->nip }}</div>
+                            <div class="mt-3"><span class="px-2 py-1 rounded" style="background-color: #F3F3FF; color: #4343FF">NIP :
+                                    {{ Auth::user()->userProfile->nip }}</span></div>
                         </td>
                         <td class="p-3">
                             <div>
@@ -35,7 +35,7 @@
                         <td class="p-3">
                             <div>
                                 <small>Direct Supervisor</small><br>
-                                Alexandra
+                                {{ $spv->name ?? '-' }}
                             </div>
                         </td>
                         <td class="p-3">

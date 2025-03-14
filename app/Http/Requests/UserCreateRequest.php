@@ -24,13 +24,14 @@ class UserCreateRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required',
+            'email' => 'required|email:rfc,strict|unique:users,email',
+            'password' => 'required|min:8',
             'nip' => 'required|numeric',
             'department' => 'required',
             'role' => 'required|in:employee,supervisor,hr',
             'position' => 'required',
             'join_date' => 'required|date',
+            'supervisor_id' => 'required',
             'status' => 'required'
         ];
     }
