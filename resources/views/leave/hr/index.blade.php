@@ -8,7 +8,7 @@
             </div>
         </div>
     @endsession
-    <div class="m-3 bg-white rounded-lg p-5">
+    <div class="m-3 bg-white rounded-lg p-3 p-md-5">
         <div class="timeoff-header mb-4">
             <h2 class="fw-bold">Leave & Time Off Request Approval</h2>
             <p>Employee's leave & time off information</p>

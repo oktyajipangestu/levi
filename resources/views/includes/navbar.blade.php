@@ -26,7 +26,7 @@
             <!--begin::User Menu Dropdown-->
             <li class="nav-item dropdown user-menu">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                    {{-- <div class="p-1 text-center" style="display:inline-block; width: 25px; height: 25px; background-color: #0000FE; color: white; border-radius:50%; line-height: 50%;"><span>D</span></div> --}}
+                    <div class="row d-md-none align-items-center justify-content-center" style="width: 25px; height: 25px; background-color: #0000FE; color: white; border-radius:50%;">{{ Str::limit(Auth::user()->name, 1, '') }}</div>
                     <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
