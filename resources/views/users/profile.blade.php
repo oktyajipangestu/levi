@@ -41,7 +41,7 @@
                         <td class="p-3">
                             <div>
                                 <small>Join Date</small><br>
-                                {{ date('d-F-Y', strtotime(Auth::user()->userProfile->join_date)) ?? "-" }}
+                                {{ isset(Auth::user()->userProfile->join_date) ? date('d-F-Y', strtotime(Auth::user()->userProfile->join_date)) : "-" }}
                             </div>
                         </td>
                         <td class="p-3">
