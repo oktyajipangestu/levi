@@ -71,7 +71,7 @@
                     <label for="supervisor_id" class="form-label">Supervisor <span class="text-danger"><small>*</small></span></label>
                     <select class="form-select" aria-label="Default select example" name="supervisor_id">
                         @if ($user->role == 'supervisor' || $user->role == 'hr')
-                            <option value="employee" {{ $user->role == 'employee' ? 'selected' : '' }}>Tidak Tersedia</option>
+                            <option value="" {{ $user->role == 'employee' ? 'selected' : '' }}>Tidak Tersedia</option>
                         @else
                             @foreach ($supervisors as $supervisor)
                                 <option value="{{ $supervisor->id }}"
