@@ -28,14 +28,14 @@
                             <td class="p-3">
                                 <strong>{{ Auth::user()->name }}</strong>
                                 <div class="mt-3"><span class="px-2 py-1 rounded" style="background-color: #F3F3FF; color: #4343FF">NIP :
-                                    {{ Auth::user()->userProfile->nip }}</span></div>
+                                    {{ Auth::user()->userProfile->nip ?? "-" }}</span></div>
                             </td>
                             <td class="p-3">
                                 <div>
                                     <div class="d-flex justify-content-between">
                                         <div>
                                             <span><small>Position</small></span><br>
-                                            {{ Auth::user()->userProfile->position }}
+                                            {{ Auth::user()->userProfile->position ?? "-" }}
                                         </div>
                                         <div>
                                             <span><small>Departement</small></span><br>
@@ -53,13 +53,13 @@
                             <td class="p-3">
                                 <div>
                                     <small>Join Date</small><br>
-                                    {{ date('d-F-Y', strtotime(Auth::user()->userProfile->join_date)) }}
+                                    {{ date('d-F-Y', strtotime(Auth::user()->userProfile->join_date)) ?? "-" }}
                                 </div>
                             </td>
                             <td class="p-3">
                                 <div>
                                     <small>Status</small><br>
-                                    {{ Auth::user()->userProfile->status }}
+                                    {{ Auth::user()->userProfile->status ?? "-" }}
                                 </div>
                             </td>
                         </tr>
@@ -95,7 +95,7 @@
                                     </div>
                                     @error('start_date')
                                         <div id="validationType" class="invalid-feedback">
-                                            {{ $message }} tes
+                                            {{ $message }}
                                         </div>
                                     @enderror
                                 </div>

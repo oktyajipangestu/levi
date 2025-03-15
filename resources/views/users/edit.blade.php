@@ -69,20 +69,24 @@
             <div class="row">
                 <div class="col-6 mb-3">
                     <label for="supervisor_id" class="form-label">Supervisor <span class="text-danger"><small>*</small></span></label>
-                    <select class="form-select" aria-label="Default select example">
-                        @foreach ($supervisors as $supervisor)
-                            <option value="{{ $supervisor->id }}"
-                                {{ $supervisor->id == $user->supervisor_id ? 'selected' : '' }}>{{ $supervisor->name }}</option>
-                        @endforeach
+                    <select class="form-select" aria-label="Default select example" name="supervisor_id">
+                        @if ($user->role == 'supervisor' || $user->role == 'hr')
+                            <option value="employee" {{ $user->role == 'employee' ? 'selected' : '' }}>Tidak Tersedia</option>
+                        @else
+                            @foreach ($supervisors as $supervisor)
+                                <option value="{{ $supervisor->id }}"
+                                    {{ $supervisor->id == $user->supervisor_id ? 'selected' : '' }}>{{ $supervisor->name }}</option>
+                            @endforeach
+                        @endif
                     </select>
-                    @error('role')
+                    @error('supervisor_id')
                         <div class="text-danger mt-2">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="col mb-3">
                     <label for="supervisor_id" class="form-label">Role <span class="text-danger"><small>*</small></span></label>
                     <select class="form-select" aria-label="Default select example" name="role">
-                        <option value="">Role</option>
+                        <option value="">--- Pilih Role ---</option>
                         <option value="employee" {{ $user->role == 'employee' ? 'selected' : '' }}>Staff</option>
                         <option value="supervisor" {{ $user->role == 'supervisor' ? 'selected' : '' }}>Supervisor</option>
                         <option value="hr" {{ $user->role == 'hr' ? 'selected' : '' }}>Human Resource</option>

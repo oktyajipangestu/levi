@@ -97,7 +97,7 @@ class UserManagementController extends Controller
         $user_profile->position = $request->position;
         $user_profile->join_date = $request->join_date;
         $user_profile->status = $request->status;
-        $user->save();
+        $user_profile->save();
 
         return redirect()->route('users.index')->with('success', 'User and Profile updated successfully!');
     }
