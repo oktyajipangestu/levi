@@ -69,6 +69,7 @@
                         <option value="annual">Annual</option>
                         <option value="big">Big</option>
                         <option value="sick">Sick</option>
+                        <option value="important">Other</option>
                     </select>
                 </div>
                 <div class="col">
@@ -114,7 +115,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <th>{{ $approval->type == 'annual' ? 'ANNUAL LEAVE' : ($approval->type == 'big' ? 'BIG LEAVE' : ($approval->type == 'sick' ? 'SICK LEAVE' : 'IMPORTANT LEAVE')) }}
+                            <th>{{ $approval->type == 'annual' ? 'ANNUAL LEAVE' : ($approval->type == 'big' ? 'BIG LEAVE' : ($approval->type == 'sick' ? 'SICK LEAVE' : 'OTHER LEAVE')) }}
                             </th>
                             <td>{{ date('d-F-Y', strtotime($approval->created_at)) }}</td>
                             <td>

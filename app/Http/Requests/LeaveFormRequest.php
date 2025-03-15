@@ -25,7 +25,7 @@ class LeaveFormRequest extends FormRequest
         return [
             'type' => 'required|in:annual,big,sick,maternity,important',
             'start_date' => 'required|date',
-            'end_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
             'reason' => 'required'
         ];
     }
@@ -37,6 +37,7 @@ class LeaveFormRequest extends FormRequest
             'type.in' => 'Silakan isi tipe cuti sesuai ketentuan',
             'start_date.required' => 'Tanggal Awal Wajib Diisi',
             'end_date.required' => 'Tanggal Akhir Wajib Diisi',
+            'end_date.after_or_equal' => 'Tanggal Akhir tidak boleh lebih awal daripada Tanggal Awal',
             'reason.required' => 'Alasan cuti wajib diisi'
         ];
     }

@@ -63,6 +63,7 @@ class ProfileController extends Controller
     {
         $userId = Auth::user()->id;
         $user = User::findOrFail($userId);
-        return view('users.profile', compact('user'));
+        $spv = User::select('name')->where('id', $user->supervisor_id)->first();
+        return view('users.profile', compact('user','spv'));
     }
 }

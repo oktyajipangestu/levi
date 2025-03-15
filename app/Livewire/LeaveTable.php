@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Leave;
 use App\Models\LeaveRequest;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -16,6 +17,7 @@ class LeaveTable extends Component
     public $type_spv = '';
     public $status_spv = '';
     public $status_hr= '';
+    public $activeTab = 'history';
 
     public function render()
     {
@@ -106,5 +108,104 @@ class LeaveTable extends Component
         }
 
         return view($view, $data);
+    }
+
+    public function setActiveTab($tab)
+    {
+        $this->activeTab = $tab;
+    }
+
+    public function approve($id)
+    {
+        $leaveRequest = LeaveRequest::findOrFail($id);
+        if ($leaveRequest) {
+            if (Auth::user()->role == 'supervisor') {
+                $leaveRequest->status_supervisor = 'approve';
+            } else {
+                $days = $this->calculateDays($leaveRequest->start_date, $leaveRequest->end_date);
+                if ($leaveRequest->type == "annual") {
+                    $leave = Leave::where('user_id', $leaveRequest->user_id)->where('type', 'annual')->first();
+                    if ($leave) {
+                        $leave->used = intval($leave->used) + $days;
+                        $leave->remaining = intval($leave->total) - intval($leave->total);
+                        $leave->save();
+                    } else {
+                        $leave_new = new Leave();
+                        $leave_new->user_id = $leaveRequest->user_id;
+                        $leave_new->type = 'annual';
+                        $leave_new->total = 12;
+                        $leave_new->used = $days;
+                        $leave_new->remaining = 12 - $days;
+
+                        $leave_new->save();
+                    }
+                } elseif ($leaveRequest->type == "big") {
+                    $leave = Leave::where('user_id', $leaveRequest->user_id)->where('type', 'big')->first();
+                    if ($leave) {
+                        $leave->used = intval($leave->used) + $days;
+                        $leave->save();
+                    } else {
+                        $leave_new = new Leave();
+                        $leave_new->user_id = $leaveRequest->user_id;
+                        $leave_new->type = 'big';
+                        $leave_new->total = $days;
+                        $leave_new->used = $days;
+                        $leave_new->remaining = $days;
+
+                        $leave_new->save();
+                    }
+                } elseif ($leaveRequest->type == "sick") {
+                    $leave = Leave::where('user_id', $leaveRequest->user_id)->where('type', 'sick')->first();
+                    if ($leave) {
+                        $leave->used = intval($leave->used) + $days;
+                        $leave->save();
+                    } else {
+                        $leave_new = new Leave();
+                        $leave_new->user_id = $leaveRequest->user_id;
+                        $leave_new->type = 'sick';
+                        $leave_new->total = $days;
+                        $leave_new->used = $days;
+                        $leave_new->remaining = $days;
+
+                        $leave_new->save();
+                    }
+                } else {
+                    $leave = Leave::where('user_id', $leaveRequest->user_id)->where('type', 'important')->first();
+                    if ($leave) {
+                        $leave->used = intval($leave->used) + $days;
+                        $leave->save();
+                    } else {
+                        $leave_new = new Leave();
+                        $leave_new->user_id = $leaveRequest->user_id;
+                        $leave_new->type = 'important';
+                        $leave_new->total = $days;
+                        $leave_new->used = $days;
+                        $leave_new->remaining = $days;
+
+                        $leave_new->save();
+                    }
+                }
+                $leaveRequest->status_hr = 'approve';
+            }
+
+            $leaveRequest->save();
+            return session('success', 'Leave request approved successfully.');
+        }
+        return session('error', 'Leave request not found.');
+    }
+
+    public function reject($id)
+    {
+        $leaveRequest = LeaveRequest::find($id);
+        if ($leaveRequest) {
+            if (Auth::user()->role == 'supervisor') {
+                $leaveRequest->status_supervisor = 'reject';
+            } else {
+                $leaveRequest->status_hr = 'reject';
+            }
+            $leaveRequest->save();
+            return session('success', 'Leave request rejected successfully.');
+        }
+        return session('error', 'Leave request not found.');
     }
 }
