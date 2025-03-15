@@ -14,7 +14,9 @@ class TeamMemberSelector extends Component
 
     public function mount()
     {
-        $this->teamMembers = User::where('supervisor_id', Auth::id())->get();
+        $this->teamMembers = User::where('supervisor_id', Auth::id())
+                            ->orWhere('id',Auth::id())
+                            ->get();
     }
 
     public function addMember()
