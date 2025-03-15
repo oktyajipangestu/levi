@@ -147,7 +147,7 @@
                                         <div>
                                             <div class="mb-2"><small>Direct <br>
                                                     Supervisor</small></div>
-                                            <img src="{{ asset('images/icon/' . $request->status_supervisor . '.svg') }}"
+                                            <img src="{{ asset('images/icon/' . strtolower($request->status_supervisor) . '.svg') }}"
                                                 alt="">
                                         </div>
                                     </div>
@@ -155,7 +155,7 @@
                                         <div>
                                             <div class="mb-2"><small>Human <br>
                                                     Resources</small></div>
-                                            <img src="{{ asset('images/icon/' . $request->status_hr . '.svg') }}"
+                                            <img src="{{ asset('images/icon/' . strtolower($request->status_hr) . '.svg') }}"
                                                 alt="">
                                         </div>
                                     </div>
@@ -326,7 +326,7 @@
                                                     <div>
                                                         <div class="mb-2"><small>Human <br>
                                                                 Resources</small></div>
-                                                        <img src="{{ asset('images/icon/' . $request->status_hr . '.svg') }}"
+                                                        <img src="{{ asset('images/icon/' . strtolower($request->status_hr) . '.svg') }}"
                                                             alt="">
                                                     </div>
                                                 </div>

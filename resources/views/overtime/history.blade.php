@@ -126,7 +126,7 @@
                                                     <div>
                                                         <div class="mb-2"><small>Human <br>
                                                                 Resources</small></div>
-                                                        <img src="{{ asset('images/icon/' . $request->status . '.svg') }}"
+                                                        <img src="{{ asset('images/icon/' . strtolower($request->status) . '.svg') }}"
                                                             alt="">
                                                     </div>
                                                 </div>
@@ -421,7 +421,7 @@
                                                         <div>
                                                             <div class="mb-2"><small>Human <br>
                                                                     Resources</small></div>
-                                                            <img src="{{ asset('images/icon/' . $request->status . '.svg') }}"
+                                                            <img src="{{ asset('images/icon/' . strtolower($request->status) . '.svg') }}"
                                                                 alt="">
                                                         </div>
                                                     </div>
@@ -430,7 +430,7 @@
                                             <td>
                                                 <a class="text-center"
                                                 href="{{ route('overtime.show', $request->id) }}"
-                                                ><img class="mx-auto" width="25px" src="{{ asset('images/icon/eye.svg') }}" alt="View Detail"></a>
+                                                ><img class="mx-auto" width="25px" src="{{ asset('images/icon/eye.svg') }}" alt="View Detail"> View Detail</a>
                                             </td>
                                         </tr>
                                     @empty
